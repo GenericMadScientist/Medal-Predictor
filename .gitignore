@@ -1,0 +1,7 @@
+# IntelliJ-specific stuff
+.idea/
+*.iml
+
+# Maven results
+target/
+dependency-reduced-pom.xml
