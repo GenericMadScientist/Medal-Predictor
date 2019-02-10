@@ -1,23 +1,35 @@
 package com.gms.tfmedals.logic;
 
-final class MedalResult {
+public final class MedalResult {
     private final Duelist duelist;
-    private final int medals;
+    private Integer medals;
 
-    MedalResult(Duelist duelist, int medals) {
-        if ((medals < 1) || (medals > 5)) {
-            throw new IllegalArgumentException("Medals must lie between one and five");
-        }
-
+    public MedalResult(Duelist duelist, Integer medals) {
+        throwExceptionIfMedalsInvalid(medals);
         this.duelist = duelist;
         this.medals = medals;
+    }
+
+    private static void throwExceptionIfMedalsInvalid(Integer medals) {
+        if ((medals != null) && ((medals < 1) || (medals > 5))) {
+            throw new IllegalArgumentException("Medals must lie between one and five");
+        }
     }
 
     int getDuelistId() {
         return duelist.getId();
     }
 
-    int getMedals() {
+    public String getDuelistName() {
+        return duelist.getName();
+    }
+
+    public Integer getMedals() {
         return medals;
+    }
+
+    public void setMedals(Integer medals) {
+        throwExceptionIfMedalsInvalid(medals);
+        this.medals = medals;
     }
 }

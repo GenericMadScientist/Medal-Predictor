@@ -11,7 +11,8 @@ class MedalResultTest {
         MedalResult result = new MedalResult(new Duelist("A", 7), 4);
 
         assertEquals(result.getDuelistId(), 7);
-        assertEquals(result.getMedals(), 4);
+        assertEquals(result.getMedals(), Integer.valueOf(4));
+        assertEquals(result.getDuelistName(), "A");
     }
 
     @Test
@@ -25,5 +26,19 @@ class MedalResultTest {
     void constructor_WithValidMedals_ShouldNotThrowException() {
         new MedalResult(new Duelist("A", 7), 1);
         new MedalResult(new Duelist("A", 7), 5);
+    }
+
+    @Test
+    void setMedals_WithInvalidMedals_ShouldThrowIllegalArgumentException() {
+        MedalResult result = new MedalResult(new Duelist("A", 7), 4);
+        assertThrows(IllegalArgumentException.class, () -> result.setMedals(0));
+        assertThrows(IllegalArgumentException.class, () -> result.setMedals(6));
+    }
+
+    @Test
+    void setMedals_ShouldChangeResultOfGetMedals() {
+        MedalResult result = new MedalResult(new Duelist("A", 7), 4);
+        result.setMedals(5);
+        assertEquals(result.getMedals(), Integer.valueOf(5));
     }
 }

@@ -1,5 +1,7 @@
 package com.gms.tfmedals.gui;
 
+import com.gms.tfmedals.logic.Duelist;
+import com.gms.tfmedals.logic.MedalResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,20 +12,20 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 public class AppController {
-    private final ObservableList<MedalResultModel> medals =
+    private final ObservableList<MedalResult> medals =
         FXCollections.observableArrayList(
-            new MedalResultModel("Alexis", 4),
-            new MedalResultModel("Chumley", null)
+            new MedalResult(new Duelist("Alexis", 4), 4),
+            new MedalResult(new Duelist("Chumley", 5), null)
         );
 
     @FXML
-    private TableView<MedalResultModel> medalTable;
+    private TableView<MedalResult> medalTable;
 
     @FXML
-    private TableColumn<MedalResultModel, String> duelistColumn;
+    private TableColumn<MedalResult, String> duelistColumn;
 
     @FXML
-    private TableColumn<MedalResultModel, Integer> medalColumn;
+    private TableColumn<MedalResult, Integer> medalColumn;
 
     public AppController() {
     }
@@ -32,7 +34,7 @@ public class AppController {
     private void initialize() {
         medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new MedalStringConverter()));
         medalColumn.setOnEditCommit(
-            (TableColumn.CellEditEvent<MedalResultModel, Integer> t) ->
+            (TableColumn.CellEditEvent<MedalResult, Integer> t) ->
                 (t.getTableView().getItems().get(
                     t.getTablePosition().getRow())
                 ).setMedals(t.getNewValue())

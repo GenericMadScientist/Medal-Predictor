@@ -1,10 +1,10 @@
 package com.gms.tfmedals.logic;
 
-final class Duelist {
+public final class Duelist {
     private final String name;
     private final int id;
 
-    Duelist(String name, int id) {
+    public Duelist(String name, int id) {
         if (name == null) {
             throw new IllegalArgumentException("Name should be a not null string");
         }
