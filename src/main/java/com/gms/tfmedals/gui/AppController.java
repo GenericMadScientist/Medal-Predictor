@@ -12,11 +12,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 public class AppController {
-    private final ObservableList<MedalResult> medals =
-        FXCollections.observableArrayList(
-            new MedalResult(new Duelist("Alexis", 4), 4),
-            new MedalResult(new Duelist("Chumley", 5), null)
-        );
+    private final ObservableList<MedalResult> medals = initMedalResults();
+
 
     @FXML
     private TableView<MedalResult> medalTable;
@@ -28,6 +25,13 @@ public class AppController {
     private TableColumn<MedalResult, Integer> medalColumn;
 
     public AppController() {
+    }
+
+    private static ObservableList<MedalResult> initMedalResults() {
+        return FXCollections.observableArrayList(
+            Duelist.allDuelists().stream().map(duelist -> new MedalResult(duelist, null))
+                .toArray(MedalResult[]::new)
+        );
     }
 
     @FXML
