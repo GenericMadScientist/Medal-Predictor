@@ -11,7 +11,7 @@ public class AppController {
     private final ObservableList<MedalResultModel> medals =
         FXCollections.observableArrayList(
             new MedalResultModel("Alexis", 4),
-            new MedalResultModel("Chumley", 5)
+            new MedalResultModel("Chumley", null)
         );
 
     @FXML
