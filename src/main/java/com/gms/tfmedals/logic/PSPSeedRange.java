@@ -9,14 +9,14 @@ public final class PSPSeedRange implements SeedRange {
         seedCount = 0x100000000L;
     }
 
-    public PSPSeedRange(long clockTimeMillis, long uncertaintyMillis) {
-        firstSeed = (clockTimeMillis - uncertaintyMillis) & 0xFFFFFFFFL;
-        if (uncertaintyMillis > 0x7FFFFFFFL) {
+    public PSPSeedRange(long clockTimeMicros, long uncertaintyMicros) {
+        firstSeed = (clockTimeMicros - uncertaintyMicros) & 0xFFFFFFFFL;
+        if (uncertaintyMicros > 0x7FFFFFFFL) {
             seedCount = 0x100000000L;
-        } else if (uncertaintyMillis < 0) {
+        } else if (uncertaintyMicros < 0) {
             throw new IllegalArgumentException("Uncertainty should be non-negative");
         } else {
-            seedCount = 2 * uncertaintyMillis + 1;
+            seedCount = 2 * uncertaintyMicros + 1;
         }
     }
 
