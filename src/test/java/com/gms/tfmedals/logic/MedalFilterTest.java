@@ -13,13 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class MedalFilterTest {
     @Test
     void constructor_WithDuplicateDuelists_ShouldThrowIllegalArgumentException() {
-        MedalResult[] results = {new MedalResult(3, 1), new MedalResult(3, 2)};
+        Duelist duelistThree = new Duelist("X", 3);
+        MedalResult[] results = {new MedalResult(duelistThree, 1), new MedalResult(duelistThree, 2)};
         assertThrows(IllegalArgumentException.class, () -> new MedalFilter(Arrays.asList(results)));
     }
 
     @Test
     void constructor_WithNoDuplicateDuelists_ShouldNotThrowException() {
-        MedalResult[] results = {new MedalResult(3, 1), new MedalResult(4, 2)};
+        Duelist duelistThree = new Duelist("X", 3);
+        Duelist duelistFour = new Duelist("Y", 4);
+        MedalResult[] results = {new MedalResult(duelistThree, 1), new MedalResult(duelistFour, 2)};
         new MedalFilter(Arrays.asList(results));
     }
 
@@ -34,10 +37,11 @@ class MedalFilterTest {
 
     @Test
     void constructor_WithChangedMedalResults_ShouldNotChange() {
+        Duelist duelistOne = new Duelist("A", 1);
         PSPSeedRange range = new PSPSeedRange(100, 5);
         List<MedalResult> results = new ArrayList<>();
         MedalFilter filter = new MedalFilter(results);
-        results.add(new MedalResult(1, 5));
+        results.add(new MedalResult(duelistOne, 5));
         assertEquals(filter.results(range).getCount(), 11);
     }
 
@@ -45,11 +49,11 @@ class MedalFilterTest {
     void results_WithSomeMedalResults_ShouldReturnCorrectResults() {
         PSPSeedRange range = new PSPSeedRange(5000, 5000);
         MedalResult[] medalResults = {
-            new MedalResult(1, 5),
-            new MedalResult(2, 3),
-            new MedalResult(3, 5),
-            new MedalResult(4, 1),
-            new MedalResult(5, 4),
+            new MedalResult(new Duelist("A", 1), 5),
+            new MedalResult(new Duelist("B", 2), 3),
+            new MedalResult(new Duelist("C", 3), 5),
+            new MedalResult(new Duelist("D", 4), 1),
+            new MedalResult(new Duelist("E", 5), 4),
         };
         MedalFilter filter = new MedalFilter(Arrays.asList(medalResults));
         FilterResult results = filter.results(range);

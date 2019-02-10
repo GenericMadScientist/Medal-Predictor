@@ -8,26 +8,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class MedalResultTest {
     @Test
     void constructor_WithDuelistAndMedals_ShouldReturnThemFromGetters() {
-        MedalResult result = new MedalResult(7, 4);
+        MedalResult result = new MedalResult(new Duelist("A", 7), 4);
 
         assertEquals(result.getDuelistId(), 7);
         assertEquals(result.getMedals(), 4);
     }
 
     @Test
-    void constructor_WithNegativeDuelist_ShouldThrowIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new MedalResult(-1, 5));
-    }
-
-    @Test
     void constructor_WithInvalidMedals_ShouldThrowIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new MedalResult(7, 0));
-        assertThrows(IllegalArgumentException.class, () -> new MedalResult(7, 6));
+        Duelist duelistSeven = new Duelist("A", 7);
+        assertThrows(IllegalArgumentException.class, () -> new MedalResult(duelistSeven, 0));
+        assertThrows(IllegalArgumentException.class, () -> new MedalResult(duelistSeven, 6));
     }
 
     @Test
-    void constructor_WithValidDuelistAndMedals_ShouldNotThrowException() {
-        new MedalResult(7, 1);
-        new MedalResult(7, 5);
+    void constructor_WithValidMedals_ShouldNotThrowException() {
+        new MedalResult(new Duelist("A", 7), 1);
+        new MedalResult(new Duelist("A", 7), 5);
     }
 }
