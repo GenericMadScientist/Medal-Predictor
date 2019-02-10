@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
@@ -15,10 +15,10 @@
             <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
             <HBox prefWidth="200.0">
-               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
-               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />
+               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
+               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />
             </HBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Options" VBox.vgrow="ALWAYS" />
+            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Options" VBox.vgrow="ALWAYS" />
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
