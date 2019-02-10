@@ -27,4 +27,14 @@ class DuelistTest {
         Duelist chumley = new Duelist("Chumley", 5);
         assertEquals(chumley.getId(), 5);
     }
+
+    @Test
+    void allDuelists_ShouldStartWithJaden() {
+        assertEquals(Duelist.allDuelists().get(0).getName(), "Jaden Yuki");
+    }
+
+    @Test
+    void allDuelists_ShouldGiveListOfSize88() {
+        assertEquals(Duelist.allDuelists().size(), 88);
+    }
 }
