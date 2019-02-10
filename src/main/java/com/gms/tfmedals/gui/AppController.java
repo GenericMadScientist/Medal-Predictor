@@ -28,6 +28,9 @@ public class AppController {
 
     @FXML
     private void initialize() {
+        duelistColumn.setReorderable(false);
+        medalColumn.setReorderable(false);
+
         duelistColumn.setCellValueFactory(new PropertyValueFactory<>("duelistName"));
         medalColumn.setCellValueFactory(new PropertyValueFactory<>("medals"));
         medalTable.setItems(medals);
