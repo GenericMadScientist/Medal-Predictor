@@ -1,7 +1,7 @@
 package com.gms.tfmedals.logic;
 
-public final class PS2SeedRange implements SeedRange {
-    public PS2SeedRange() {
+final class PS2SeedRange implements SeedRange {
+    PS2SeedRange() {
     }
 
     @Override

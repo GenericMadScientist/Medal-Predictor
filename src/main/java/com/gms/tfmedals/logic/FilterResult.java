@@ -3,15 +3,15 @@ package com.gms.tfmedals.logic;
 import java.util.List;
 import java.util.OptionalLong;
 
-public final class FilterResult {
+final class FilterResult {
     private long firstSeed = 0;
     private boolean hasSeed = false;
     private long count = 0;
 
-    public FilterResult() {
+    FilterResult() {
     }
 
-    public OptionalLong getFirstSeed() {
+    OptionalLong getFirstSeed() {
         if (!hasSeed) {
             return OptionalLong.empty();
         } else {
@@ -19,11 +19,11 @@ public final class FilterResult {
         }
     }
 
-    public long getCount() {
+    long getCount() {
         return count;
     }
 
-    public void addSeed(long seed) {
+    void addSeed(long seed) {
         if (!hasSeed) {
             firstSeed = seed;
             hasSeed = true;
@@ -32,7 +32,7 @@ public final class FilterResult {
         count++;
     }
 
-    public static FilterResult combine(List<FilterResult> results) {
+    static FilterResult combine(List<FilterResult> results) {
         FilterResult finalResult = new FilterResult();
 
         for (FilterResult subresult : results) {

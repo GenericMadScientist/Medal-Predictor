@@ -10,21 +10,21 @@ import java.util.OptionalLong;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MedalFilterTest {
+class MedalFilterTest {
     @Test
-    public void constructor_WithDuplicateDuelists_ShouldThrowIllegalArgumentException() {
+    void constructor_WithDuplicateDuelists_ShouldThrowIllegalArgumentException() {
         MedalResult[] results = {new MedalResult(3, 1), new MedalResult(3, 2)};
         assertThrows(IllegalArgumentException.class, () -> new MedalFilter(Arrays.asList(results)));
     }
 
     @Test
-    public void constructor_WithNoDuplicateDuelists_ShouldNotThrowException() {
+    void constructor_WithNoDuplicateDuelists_ShouldNotThrowException() {
         MedalResult[] results = {new MedalResult(3, 1), new MedalResult(4, 2)};
         new MedalFilter(Arrays.asList(results));
     }
 
     @Test
-    public void results_WithNoMedalResults_ShouldAcceptEverything() {
+    void results_WithNoMedalResults_ShouldAcceptEverything() {
         PSPSeedRange range = new PSPSeedRange(100, 5);
         MedalFilter filter = new MedalFilter(new ArrayList<>());
         FilterResult results = filter.results(range);
@@ -33,7 +33,7 @@ public class MedalFilterTest {
     }
 
     @Test
-    public void constructor_WithChangedMedalResults_ShouldNotChange() {
+    void constructor_WithChangedMedalResults_ShouldNotChange() {
         PSPSeedRange range = new PSPSeedRange(100, 5);
         List<MedalResult> results = new ArrayList<>();
         MedalFilter filter = new MedalFilter(results);
@@ -42,7 +42,7 @@ public class MedalFilterTest {
     }
 
     @Test
-    public void results_WithSomeMedalResults_ShouldReturnCorrectResults() {
+    void results_WithSomeMedalResults_ShouldReturnCorrectResults() {
         PSPSeedRange range = new PSPSeedRange(5000, 5000);
         MedalResult[] medalResults = {
             new MedalResult(1, 5),
