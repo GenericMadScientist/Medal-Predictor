@@ -7,34 +7,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea">
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label text="Known Medals" VBox.vgrow="ALWAYS" />
-                  <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                  <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                  <HBox prefWidth="200.0">
-                     <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Options" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label text="Predictions" VBox.vgrow="ALWAYS" />
-                  <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                  <Label text="Number of 5s:" VBox.vgrow="ALWAYS" />
-                  <Label text="Number of matching seeds:" VBox.vgrow="ALWAYS" />
-                  <Label text="Time off:" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
+         <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <Label text="Known Medals" VBox.vgrow="ALWAYS" />
+            <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+            <HBox prefWidth="200.0">
+               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
+               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />
+            </HBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Options" VBox.vgrow="ALWAYS" />
+         </VBox>
+         <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <Label text="Predictions" VBox.vgrow="ALWAYS" />
+            <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <Label text="Number of 5s:" VBox.vgrow="ALWAYS" />
+            <Label text="Number of matching seeds:" VBox.vgrow="ALWAYS" />
+            <Label text="Time off:" VBox.vgrow="ALWAYS" />
+         </VBox>
       </HBox>
    </center>
 </BorderPane>
