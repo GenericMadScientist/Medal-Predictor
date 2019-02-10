@@ -1,12 +1,13 @@
 package com.gms.tfmedals.gui;
 
-import javafx.beans.property.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class MedalResultModel {
     private final StringProperty duelistName;
     private Integer medals;
 
-    public MedalResultModel(String duelistName, Integer medals) {
+    MedalResultModel(String duelistName, Integer medals) {
         this.duelistName = new SimpleStringProperty(duelistName);
         this.medals = medals;
     }
