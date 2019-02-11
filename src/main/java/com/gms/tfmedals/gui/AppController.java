@@ -7,12 +7,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public final class AppController {
     private final ObservableList<MedalResult> medals = initialMedalResults();
@@ -56,7 +58,7 @@ public final class AppController {
     private void configureMedalsTable() {
         medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new MedalStringConverter()));
         medalColumn.setOnEditCommit(
-            (TableColumn.CellEditEvent<MedalResult, Integer> t) ->
+            (CellEditEvent<MedalResult, Integer> t) ->
                 (t.getTableView().getItems().get(
                     t.getTablePosition().getRow())
                 ).setMedals(t.getNewValue())
@@ -73,11 +75,6 @@ public final class AppController {
     private void configurePredictionsTable() {
         predictionTable.setRoot(root);
 
-        for (Location location : Location.values()) {
-            Duelist locationDuelist = Duelist.dummyLocationDuelist(location);
-            root.getChildren().add(new TreeItem<>(new MedalResult(locationDuelist, null)));
-        }
-
         predictionDuelistColumn.setReorderable(false);
         predictionMedalColumn.setReorderable(false);
 
@@ -91,24 +88,42 @@ public final class AppController {
 
     @FXML
     private void handlePredictButtonAction() {
-        root.getChildren().forEach(category -> category.getChildren().clear());
+        root.getChildren().clear();
 
         MedalFilter filter = new MedalFilter(medals);
         SeedRange range = new PS2SeedRange();
         FilterResult results = filter.results(range);
+
         if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
             long seed = results.getFirstSeed().getAsLong();
-            List<MedalResult> predictions = MedalResult.resultsFromSeed(seed);
-            for (TreeItem<MedalResult> category : root.getChildren()) {
-                for (MedalResult prediction : predictions) {
-                    if (prediction.getLocation().equals(category.getValue().getLocation())) {
-                        category.getChildren().add(new TreeItem<>(prediction));
-                    }
-                }
+            Collection<MedalResult> predictions = MedalResult.resultsFromSeed(seed);
+            fillInPredictions(predictions);
+        } else if (results.getCount() > 1) {
+            root.getChildren().add(new TreeItem<>(
+                new MedalResult(new Duelist("More than one seed", 0, null), null))
+            );
+        } else {
+            root.getChildren().add(new TreeItem<>(
+                new MedalResult(new Duelist("No matching seeds", 0, null), null))
+            );
+        }
+    }
+
+    private void fillInPredictions(Collection<MedalResult> predictions) {
+        for (Location location : Location.values()) {
+            Collection<TreeItem<MedalResult>> resultsInLocation = predictions.stream()
+                .filter(x -> x.getLocation().equals(location))
+                .map(TreeItem::new)
+                .collect(Collectors.toList());
+
+            if (!resultsInLocation.isEmpty()) {
+                TreeItem<MedalResult> locationNode = new TreeItem<>(
+                    new MedalResult(new Duelist(location.toString(), 0, location), null)
+                );
+                locationNode.getChildren().addAll(resultsInLocation);
+                root.getChildren().add(locationNode);
             }
         }
-        System.out.println(results.getCount());
-        System.out.println(predictionDuelistColumn.getWidth() + "\n");
     }
 
     private class MedalStringConverter extends StringConverter<Integer> {

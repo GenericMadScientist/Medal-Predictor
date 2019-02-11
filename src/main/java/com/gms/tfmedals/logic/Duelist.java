@@ -9,7 +9,7 @@ public final class Duelist {
     private final int id;
     private final Location location;
 
-    Duelist(String name, int id, Location location) {
+    public Duelist(String name, int id, Location location) {
         if (name == null) {
             throw new IllegalArgumentException("Name should be a not null string");
         }
@@ -33,10 +33,6 @@ public final class Duelist {
 
     Location getLocation() {
         return location;
-    }
-
-    public static Duelist dummyLocationDuelist(Location location) {
-        return new Duelist(location.toString(), 0, location);
     }
 
     public static List<Duelist> allDuelists() {
