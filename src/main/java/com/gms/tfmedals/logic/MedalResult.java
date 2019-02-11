@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MedalResult {
-    private final static long RNG_MULT = 0x5851F42D4C957F2DL;
-    private final static long RNG_INC = 1;
-
     private final Duelist duelist;
     private Integer medals;
 
@@ -45,9 +42,9 @@ public final class MedalResult {
         for (Duelist duelist : Duelist.allDuelists()) {
             long seedCopy = seed;
             for (int i = 0; i < duelist.getId(); i++) {
-                seedCopy = RNG_MULT * seedCopy + RNG_INC;
+                seedCopy = MedalRng.nextSeed(seedCopy);;
             }
-            int medals = (int) ((seedCopy >> 32) & 0x7FFFFFFF) % 5 + 1;
+            int medals = MedalRng.medalRoll(seedCopy) + 1;
             results.add(new MedalResult(duelist, medals));
         }
 

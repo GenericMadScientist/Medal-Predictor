@@ -8,8 +8,6 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public final class MedalFilter {
-    private final static long RNG_MULT = 0x5851F42D4C957F2DL;
-    private final static long RNG_INC = 1;
     private final static long TASK_INCREMENT_SIZE = 0x800000;
 
     private final long[] medalMults;
@@ -26,10 +24,10 @@ public final class MedalFilter {
             .collect(Collectors.toList());
 
         medalMults = nonNullMedalResults.stream()
-            .mapToLong(x -> duelistMult(x.getDuelistId()))
+            .mapToLong(x -> MedalRng.duelistMult(x.getDuelistId()))
             .toArray();
         medalIncs = nonNullMedalResults.stream()
-            .mapToLong(x -> duelistInc(x.getDuelistId()))
+            .mapToLong(x -> MedalRng.duelistInc(x.getDuelistId()))
             .toArray();
         medalRolls = nonNullMedalResults.stream()
             .mapToInt(x -> x.getMedals() - 1)
@@ -46,26 +44,6 @@ public final class MedalFilter {
         }
 
         return false;
-    }
-
-    private static long duelistMult(int duelistId) {
-        long mult = 1;
-
-        for (int i = 0; i < duelistId; i++) {
-            mult *= RNG_MULT;
-        }
-
-        return mult;
-    }
-
-    private static long duelistInc(int duelistId) {
-        long inc = 0;
-
-        for (int i = 0; i < duelistId; i++) {
-            inc = RNG_MULT * inc + RNG_INC;
-        }
-
-        return inc;
     }
 
     public FilterResult results(SeedRange range) {
@@ -104,7 +82,7 @@ public final class MedalFilter {
 
     private boolean isMatchingSeed(long seed) {
         for (int i = 0; i < medalRolls.length; i++) {
-            if (medalRoll(seed, i) != medalRolls[i]) {
+            if (nthMedalRoll(seed, i) != medalRolls[i]) {
                 return false;
             }
         }
@@ -112,9 +90,9 @@ public final class MedalFilter {
         return true;
     }
 
-    private int medalRoll(long seed, int checkNumber) {
-        seed = medalMults[checkNumber] * seed + medalIncs[checkNumber];
-        return ((int) ((seed >> 32) & 0x7FFFFFFF)) % 5;
+    private int nthMedalRoll(long seed, int n) {
+        seed = medalMults[n] * seed + medalIncs[n];
+        return MedalRng.medalRoll(seed);
     }
 
     private FilterResult getResultFromCallables(ExecutorService executor,
