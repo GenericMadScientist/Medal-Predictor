@@ -35,8 +35,8 @@
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
             <TreeTableView fx:id="predictionTable" prefHeight="200.0" prefWidth="200.0" showRoot="false" VBox.vgrow="ALWAYS">
               <columns>
-                <TreeTableColumn fx:id="predictionDuelistColumn" prefWidth="75.0" text="Duelist" />
-                <TreeTableColumn fx:id="predictionMedalColumn" prefWidth="75.0" text="Medals" />
+                <TreeTableColumn fx:id="predictionDuelistColumn" prefWidth="75.0" sortable="false" text="Duelist" />
+                <TreeTableColumn fx:id="predictionMedalColumn" prefWidth="75.0" sortable="false" text="Medals" />
               </columns>
                <columnResizePolicy>
                   <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

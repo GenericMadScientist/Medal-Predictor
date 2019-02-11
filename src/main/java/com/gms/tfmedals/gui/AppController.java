@@ -77,6 +77,9 @@ public final class AppController {
             root.getChildren().add(new TreeItem<>(new MedalResult(locationDuelist, null)));
         }
 
+        predictionDuelistColumn.setReorderable(false);
+        predictionMedalColumn.setReorderable(false);
+
         predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResult, String> param) ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistName())
         );
