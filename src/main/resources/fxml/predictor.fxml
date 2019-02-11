@@ -3,9 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -32,7 +33,15 @@
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
-            <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <TreeTableView fx:id="predictionTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TreeTableColumn fx:id="predictionDuelistColumn" prefWidth="75.0" text="Duelist" />
+                <TreeTableColumn fx:id="predictionMedalColumn" prefWidth="75.0" text="Medals" />
+              </columns>
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TreeTableView>
             <Label text="Number of 5s:" VBox.vgrow="ALWAYS" />
             <Label text="Number of matching seeds:" VBox.vgrow="ALWAYS" />
             <Label text="Time off:" VBox.vgrow="ALWAYS" />
