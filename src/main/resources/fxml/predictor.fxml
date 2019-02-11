@@ -35,16 +35,16 @@
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
             <TreeTableView fx:id="predictionTable" prefHeight="200.0" prefWidth="200.0" showRoot="false" VBox.vgrow="ALWAYS">
               <columns>
-                <TreeTableColumn fx:id="predictionDuelistColumn" minWidth="165.0" prefWidth="-1.0" sortable="false" text="Duelist" />
+                <TreeTableColumn fx:id="predictionDuelistColumn" maxWidth="180.0" minWidth="180.0" prefWidth="-1.0" sortable="false" text="Duelist" />
                 <TreeTableColumn fx:id="predictionMedalColumn" minWidth="60.0" prefWidth="67.0" sortable="false" text="Medals" />
               </columns>
                <columnResizePolicy>
                   <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TreeTableView>
-            <Label text="Number of 5s:" VBox.vgrow="ALWAYS" />
-            <Label text="Number of matching seeds:" VBox.vgrow="ALWAYS" />
-            <Label text="Time off:" VBox.vgrow="ALWAYS" />
+            <Label fx:id="fiveCountLabel" text="Number of 5s: -" VBox.vgrow="ALWAYS" />
+            <Label fx:id="matchingSeedsLabel" text="Number of matching seeds: -" VBox.vgrow="ALWAYS" />
+            <Label text="Time off: -" VBox.vgrow="ALWAYS" />
          </VBox>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

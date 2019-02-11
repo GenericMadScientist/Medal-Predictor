@@ -39,6 +39,12 @@ public final class AppController {
     @FXML
     private TreeTableColumn<MedalResult, Integer> predictionMedalColumn;
 
+    @FXML
+    private Label matchingSeedsLabel;
+
+    @FXML
+    private Label fiveCountLabel;
+
     public AppController() {
     }
 
@@ -89,23 +95,20 @@ public final class AppController {
     @FXML
     private void handlePredictButtonAction() {
         root.getChildren().clear();
+        fiveCountLabel.setText("Number of 5s: -");
 
         MedalFilter filter = new MedalFilter(medals);
         SeedRange range = new PS2SeedRange();
         FilterResult results = filter.results(range);
 
+        matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
+
         if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
             long seed = results.getFirstSeed().getAsLong();
             Collection<MedalResult> predictions = MedalResult.resultsFromSeed(seed);
+            long numberOfFives = predictions.stream().filter(x -> x.getMedals() == 5).count();
+            fiveCountLabel.setText("Number of 5s: " + numberOfFives);
             fillInPredictions(predictions);
-        } else if (results.getCount() > 1) {
-            root.getChildren().add(new TreeItem<>(
-                new MedalResult(new Duelist("More than one seed", 0, null), null))
-            );
-        } else {
-            root.getChildren().add(new TreeItem<>(
-                new MedalResult(new Duelist("No matching seeds", 0, null), null))
-            );
         }
     }
 
