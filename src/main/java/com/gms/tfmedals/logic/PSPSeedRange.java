@@ -1,15 +1,15 @@
 package com.gms.tfmedals.logic;
 
-final class PSPSeedRange implements SeedRange {
+public final class PSPSeedRange implements SeedRange {
     private final long firstSeed;
     private final long seedCount;
 
-    PSPSeedRange() {
+    public PSPSeedRange() {
         firstSeed = 0;
         seedCount = 0x100000000L;
     }
 
-    PSPSeedRange(long clockTimeMicros, long uncertaintyMicros) {
+    public PSPSeedRange(long clockTimeMicros, long uncertaintyMicros) {
         firstSeed = (clockTimeMicros - uncertaintyMicros) & 0xFFFFFFFFL;
         if (uncertaintyMicros > 0x7FFFFFFFL) {
             seedCount = 0x100000000L;

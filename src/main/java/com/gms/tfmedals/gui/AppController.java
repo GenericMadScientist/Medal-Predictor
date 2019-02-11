@@ -22,9 +22,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public final class AppController {
+    private static final int MEDALS_NEEDED = 80;
+
     private ConfigOptions options = null;
     private final ObservableList<MedalResult> medals = initialMedalResults();
 
@@ -58,9 +61,9 @@ public final class AppController {
         Path path = Paths.get("options.json");
 
         if (Files.exists(path)) {
-            JSONObject json = new JSONObject(Files.readString(path));
             options = new ConfigOptions();
             try {
+                JSONObject json = new JSONObject(Files.readString(path));
                 options.readFromJson(json);
             } catch (JSONException ignore) {
                 options = null;
@@ -123,18 +126,45 @@ public final class AppController {
         fiveCountLabel.setText("Number of 5s: -");
 
         MedalFilter filter = new MedalFilter(medals);
-        SeedRange range = new PS2SeedRange();
+        SeedRange range = seedRangeFromOptions();
         FilterResult results = filter.results(range);
 
         matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
 
         if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
             long seed = results.getFirstSeed().getAsLong();
-            Collection<MedalResult> predictions = MedalResult.resultsFromSeed(seed);
+            Collection<MedalResult> predictions = predictionsFromSeed(seed);
             long numberOfFives = predictions.stream().filter(x -> x.getMedals() == 5).count();
             fiveCountLabel.setText("Number of 5s: " + numberOfFives);
             fillInPredictions(predictions);
         }
+    }
+
+    private SeedRange seedRangeFromOptions() {
+        if (options.getConsole().equals(Console.PS2)) {
+            return new PS2SeedRange();
+        } else {
+            return new PSPSeedRange();
+        }
+    }
+
+    private Collection<MedalResult> predictionsFromSeed(long seed) {
+        Collection<MedalResult> results = MedalResult.resultsFromSeed(seed);
+        if (!options.getFilterLowMedals()) {
+            return results;
+        }
+
+        Collection<MedalResult> highResults = Collections.emptyList();
+        int medalThreshold = 4;
+
+        while (highResults.stream().mapToInt(MedalResult::getMedals).sum() < MEDALS_NEEDED) {
+            final int thresholdCopy = medalThreshold;
+            highResults = results.stream().filter(x -> x.getMedals() > thresholdCopy)
+                .collect(Collectors.toList());
+            medalThreshold--;
+        }
+
+        return highResults;
     }
 
     private void fillInPredictions(Collection<MedalResult> predictions) {
