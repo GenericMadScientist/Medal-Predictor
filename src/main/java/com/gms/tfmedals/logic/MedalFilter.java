@@ -1,9 +1,6 @@
 package com.gms.tfmedals.logic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,20 +16,27 @@ public final class MedalFilter {
     private final long[] medalIncs;
     private final int[] medalRolls;
 
-    public MedalFilter(List<MedalResult> medalResults) {
+    public MedalFilter(Collection<MedalResult> medalResults) {
         if (hasDuplicateDuelist(medalResults)) {
             throw new IllegalArgumentException("Duplicate duelist");
         }
 
-        medalResults = medalResults.stream().filter(x -> x.getMedals() != null)
+        List<MedalResult> nonNullMedalResults = medalResults.stream()
+            .filter(x -> x.getMedals() != null)
             .collect(Collectors.toList());
 
-        medalMults = medalResults.stream().mapToLong(x -> duelistMult(x.getDuelistId())).toArray();
-        medalIncs = medalResults.stream().mapToLong(x -> duelistInc(x.getDuelistId())).toArray();
-        medalRolls = medalResults.stream().mapToInt(x -> x.getMedals() - 1).toArray();
+        medalMults = nonNullMedalResults.stream()
+            .mapToLong(x -> duelistMult(x.getDuelistId()))
+            .toArray();
+        medalIncs = nonNullMedalResults.stream()
+            .mapToLong(x -> duelistInc(x.getDuelistId()))
+            .toArray();
+        medalRolls = nonNullMedalResults.stream()
+            .mapToInt(x -> x.getMedals() - 1)
+            .toArray();
     }
 
-    private static boolean hasDuplicateDuelist(List<MedalResult> medalResults) {
+    private static boolean hasDuplicateDuelist(Collection<MedalResult> medalResults) {
         Set<Integer> duelists = new HashSet<>();
 
         for (MedalResult result : medalResults) {
