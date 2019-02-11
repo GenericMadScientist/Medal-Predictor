@@ -2,10 +2,7 @@ package com.gms.tfmedals.logic;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.OptionalLong;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,6 +39,15 @@ class MedalFilterTest {
         List<MedalResult> results = new ArrayList<>();
         MedalFilter filter = new MedalFilter(results);
         results.add(new MedalResult(duelistOne, 5));
+        assertEquals(filter.results(range).getCount(), 11);
+    }
+
+    @Test
+    void constructor_ShouldIgnoreNullMedals() {
+        Duelist duelistOne = new Duelist("A", 1);
+        PSPSeedRange range = new PSPSeedRange(100, 5);
+        List<MedalResult> results = Collections.singletonList(new MedalResult(duelistOne, null));
+        MedalFilter filter = new MedalFilter(results);
         assertEquals(filter.results(range).getCount(), 11);
     }
 

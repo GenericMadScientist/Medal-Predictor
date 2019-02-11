@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 final class MedalFilter {
     private final static long RNG_MULT = 0x5851F42D4C957F2DL;
@@ -22,6 +23,9 @@ final class MedalFilter {
         if (hasDuplicateDuelist(medalResults)) {
             throw new IllegalArgumentException("Duplicate duelist");
         }
+
+        medalResults = medalResults.stream().filter(x -> x.getMedals() != null)
+            .collect(Collectors.toList());
 
         medalMults = medalResults.stream().mapToLong(x -> duelistMult(x.getDuelistId())).toArray();
         medalIncs = medalResults.stream().mapToLong(x -> duelistInc(x.getDuelistId())).toArray();
