@@ -2,7 +2,7 @@ package com.gms.tfmedals.gui;
 
 import javafx.application.Application;
 
-class App {
+final class App {
     public static void main(String[] args) {
         Application.launch(AppFXML.class, args);
     }

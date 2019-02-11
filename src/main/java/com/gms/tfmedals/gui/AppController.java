@@ -10,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
-public class AppController {
+public final class AppController {
     private final ObservableList<MedalResult> medals = initialMedalResults();
 
     @FXML
