@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public final class AppController {
+    private ConfigOptions options = new ConfigOptions();
     private final ObservableList<MedalResult> medals = initialMedalResults();
 
     @FXML
@@ -48,6 +49,7 @@ public final class AppController {
     private Label fiveCountLabel;
 
     public AppController() {
+        options.toJson();
     }
 
     private static ObservableList<MedalResult> initialMedalResults() {
