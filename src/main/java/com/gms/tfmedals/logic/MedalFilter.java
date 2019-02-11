@@ -74,7 +74,7 @@ public final class MedalFilter {
         List<Callable<FilterResult>> callables = new ArrayList<>();
 
         for (long i = 0; i < range.numbOfSeeds(); i += TASK_INCREMENT_SIZE) {
-            long initSeed = range.initialSeed() + i;
+            long initSeed = range.initialSeed() + i * range.increment();
             long taskSize = Math.min(TASK_INCREMENT_SIZE, range.numbOfSeeds() - i);
             callables.add(() -> resultsFromSubrange(initSeed, taskSize, range.increment()));
         }

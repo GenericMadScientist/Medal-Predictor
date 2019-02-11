@@ -53,18 +53,24 @@ class MedalFilterTest {
 
     @Test
     void results_WithSomeMedalResults_ShouldReturnCorrectResults() {
-        PSPSeedRange range = new PSPSeedRange(5000, 5000);
+        PS2SeedRange range = new PS2SeedRange();
         MedalResult[] medalResults = {
-            new MedalResult(new Duelist("A", 1), 5),
-            new MedalResult(new Duelist("B", 2), 3),
-            new MedalResult(new Duelist("C", 3), 5),
-            new MedalResult(new Duelist("D", 4), 1),
-            new MedalResult(new Duelist("E", 5), 4),
+            new MedalResult(new Duelist("Jaden", 1), 5),
+            new MedalResult(new Duelist("Chumley", 3), 2),
+            new MedalResult(new Duelist("Alexis", 4), 2),
+            new MedalResult(new Duelist("Chazz", 5), 3),
+            new MedalResult(new Duelist("Bastion", 6), 1),
+            new MedalResult(new Duelist("Vellian", 8), 1),
+            new MedalResult(new Duelist("Lyman", 9), 2),
+            new MedalResult(new Duelist("Damon", 18), 1),
+            new MedalResult(new Duelist("Jasmine", 20), 1),
+            new MedalResult(new Duelist("Mindy", 21), 2),
+            new MedalResult(new Duelist("Para", 24), 3)
         };
         MedalFilter filter = new MedalFilter(Arrays.asList(medalResults));
         FilterResult results = filter.results(range);
 
-        assertEquals(results.getFirstSeed(), OptionalLong.of(15));
-        assertEquals(results.getCount(), 12);
+        assertEquals(results.getFirstSeed(), OptionalLong.of(0x0668C700));
+        assertEquals(results.getCount(), 1);
     }
 }
