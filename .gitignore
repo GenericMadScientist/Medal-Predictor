@@ -5,3 +5,6 @@
 # Maven results
 target/
 dependency-reduced-pom.xml
+
+# Testing config
+options.json

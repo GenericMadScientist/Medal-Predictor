@@ -14,12 +14,18 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public final class AppController {
-    private ConfigOptions options = new ConfigOptions();
+    private ConfigOptions options = null;
     private final ObservableList<MedalResult> medals = initialMedalResults();
 
     @FXML
@@ -48,8 +54,23 @@ public final class AppController {
     @FXML
     private Label fiveCountLabel;
 
-    public AppController() {
-        options.toJson();
+    public AppController() throws IOException {
+        Path path = Paths.get("options.json");
+
+        if (Files.exists(path)) {
+            JSONObject json = new JSONObject(Files.readString(path));
+            options = new ConfigOptions();
+            try {
+                options.readFromJson(json);
+            } catch (JSONException ignore) {
+                options = null;
+            }
+        }
+
+        if (options == null) {
+            options = new ConfigOptions();
+            Files.write(path, options.toJson().toString().getBytes());
+        }
     }
 
     private static ObservableList<MedalResult> initialMedalResults() {
