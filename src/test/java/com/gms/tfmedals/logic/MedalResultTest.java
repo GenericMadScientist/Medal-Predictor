@@ -2,6 +2,8 @@ package com.gms.tfmedals.logic;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -40,5 +42,14 @@ class MedalResultTest {
         MedalResult result = new MedalResult(new Duelist("A", 7, Location.CLIFF), 4);
         result.setMedals(5);
         assertEquals(result.getMedals(), Integer.valueOf(5));
+    }
+
+    @Test
+    void resultsFromSeed_WithSeedZero_ShouldReturnCorrectMedals() {
+        List<MedalResult> results = MedalResult.resultsFromSeed(0);
+        assertEquals(results.get(0).getMedals(), Integer.valueOf(1));
+        assertEquals(results.get(1).getMedals(), Integer.valueOf(4));
+        assertEquals(results.get(2).getMedals(), Integer.valueOf(4));
+        assertEquals(results.get(9).getMedals(), Integer.valueOf(1));
     }
 }
