@@ -7,10 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.util.StringConverter;
+
+import java.util.List;
 
 public final class AppController {
     private final ObservableList<MedalResult> medals = initialMedalResults();
@@ -26,6 +28,8 @@ public final class AppController {
 
     @FXML
     private TreeTableView<MedalResult> predictionTable;
+
+    private final TreeItem<MedalResult> root = new TreeItem<>(new MedalResult(null, null));
 
     @FXML
     private TreeTableColumn<MedalResult, String> predictionDuelistColumn;
@@ -67,9 +71,6 @@ public final class AppController {
     }
 
     private void configurePredictionsTable() {
-        final TreeItem<MedalResult> root = new TreeItem<>(
-            new MedalResult(null, null)
-        );
         predictionTable.setRoot(root);
 
         for (Location location : Location.values()) {
@@ -90,11 +91,24 @@ public final class AppController {
 
     @FXML
     private void handlePredictButtonAction() {
+        root.getChildren().forEach(category -> category.getChildren().clear());
+
         MedalFilter filter = new MedalFilter(medals);
         SeedRange range = new PS2SeedRange();
         FilterResult results = filter.results(range);
+        if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
+            long seed = results.getFirstSeed().getAsLong();
+            List<MedalResult> predictions = MedalResult.resultsFromSeed(seed);
+            for (TreeItem<MedalResult> category : root.getChildren()) {
+                for (MedalResult prediction : predictions) {
+                    if (prediction.getLocation().equals(category.getValue().getLocation())) {
+                        category.getChildren().add(new TreeItem<>(prediction));
+                    }
+                }
+            }
+        }
         System.out.println(results.getCount());
-        System.out.println(results.getFirstSeed());
+        System.out.println(predictionDuelistColumn.getWidth() + "\n");
     }
 
     private class MedalStringConverter extends StringConverter<Integer> {

@@ -13,8 +13,9 @@ class MedalResultTest {
         MedalResult result = new MedalResult(new Duelist("A", 7, Location.CLIFF), 4);
 
         assertEquals(result.getDuelistId(), 7);
-        assertEquals(result.getMedals(), Integer.valueOf(4));
         assertEquals(result.getDuelistName(), "A");
+        assertEquals(result.getLocation(), Location.CLIFF);
+        assertEquals(result.getMedals(), Integer.valueOf(4));
     }
 
     @Test

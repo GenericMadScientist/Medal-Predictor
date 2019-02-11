@@ -27,6 +27,10 @@ public final class MedalResult {
         return duelist.getName();
     }
 
+    public Location getLocation() {
+        return duelist.getLocation();
+    }
+
     public Integer getMedals() {
         return medals;
     }
