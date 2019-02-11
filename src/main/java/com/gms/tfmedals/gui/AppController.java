@@ -45,13 +45,18 @@ public final class AppController {
 
     @FXML
     private void initialize() {
+        configureMedalsTable();
+        configurePredictionsTable();
+    }
+
+    private void configureMedalsTable() {
         medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new MedalStringConverter()));
         medalColumn.setOnEditCommit(
             (TableColumn.CellEditEvent<MedalResult, Integer> t) ->
                 (t.getTableView().getItems().get(
                     t.getTablePosition().getRow())
                 ).setMedals(t.getNewValue())
-            );
+        );
 
         duelistColumn.setReorderable(false);
         medalColumn.setReorderable(false);
@@ -59,9 +64,11 @@ public final class AppController {
         duelistColumn.setCellValueFactory(new PropertyValueFactory<>("duelistName"));
         medalColumn.setCellValueFactory(new PropertyValueFactory<>("medals"));
         medalTable.setItems(medals);
+    }
 
+    private void configurePredictionsTable() {
         final TreeItem<MedalResult> root = new TreeItem<>(
-            new MedalResult(new Duelist("Classroom", 0, Location.CLASSROOM), null)
+            new MedalResult(new Duelist("Dummy Root", 0, Location.CLASSROOM), null)
         );
         predictionTable.setRoot(root);
 
