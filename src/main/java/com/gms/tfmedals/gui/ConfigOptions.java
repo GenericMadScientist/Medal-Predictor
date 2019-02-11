@@ -13,14 +13,28 @@ final class ConfigOptions {
     ConfigOptions() {
     }
 
+    void readFromJson(JSONObject json) {
+        Console newConsole = json.getEnum(Console.class, "console");
+        String newPartner = json.getString("partner");
+        boolean newFilterLowMedals = json.getBoolean("filterLowMedals");
+        int newPspTimerDelay = json.getInt("pspTimerDelay");
+        int newPspTimerUncertainty = json.getInt("pspTimerUncertainty");
+
+        console.setValue(newConsole);
+        partner.setValue(newPartner);
+        filterLowMedals.set(newFilterLowMedals);
+        pspTimerDelay.set(newPspTimerDelay);
+        pspTimerUncertainty.set(newPspTimerUncertainty);
+    }
+
     JSONObject toJson() {
-        JSONObject jo = new JSONObject();
-        jo.put("console", console.getValue());
-        jo.put("partner", partner.getValue());
-        jo.put("filterLowMedals", filterLowMedals.get());
-        jo.put("pspTimerDelay", pspTimerDelay.get());
-        jo.put("pspTimerUncertainty", pspTimerUncertainty.get());
-        return jo;
+        JSONObject json = new JSONObject();
+        json.put("console", console.getValue());
+        json.put("partner", partner.getValue());
+        json.put("filterLowMedals", filterLowMedals.get());
+        json.put("pspTimerDelay", pspTimerDelay.get());
+        json.put("pspTimerUncertainty", pspTimerUncertainty.get());
+        return json;
     }
 
     public Console getConsole() {
