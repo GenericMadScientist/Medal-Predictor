@@ -36,6 +36,13 @@ class DuelistTest {
     }
 
     @Test
+    void dummyLocationDuelist_WithLocationCliff_ShouldReturnCliffHeading() {
+        Duelist cliff = Duelist.dummyLocationDuelist(Location.CLIFF);
+        assertEquals(cliff.getName(), "Cliff");
+        assertEquals(cliff.getLocation(), Location.CLIFF);
+    }
+
+    @Test
     void allDuelists_ShouldStartWithJaden() {
         assertEquals(Duelist.allDuelists().get(0).getName(), "Jaden Yuki");
     }

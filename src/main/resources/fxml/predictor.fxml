@@ -33,7 +33,7 @@
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
-            <TreeTableView fx:id="predictionTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TreeTableView fx:id="predictionTable" prefHeight="200.0" prefWidth="200.0" showRoot="false" VBox.vgrow="ALWAYS">
               <columns>
                 <TreeTableColumn fx:id="predictionDuelistColumn" prefWidth="75.0" text="Duelist" />
                 <TreeTableColumn fx:id="predictionMedalColumn" prefWidth="75.0" text="Medals" />

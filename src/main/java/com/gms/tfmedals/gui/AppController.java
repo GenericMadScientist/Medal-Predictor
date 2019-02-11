@@ -68,9 +68,14 @@ public final class AppController {
 
     private void configurePredictionsTable() {
         final TreeItem<MedalResult> root = new TreeItem<>(
-            new MedalResult(new Duelist("Dummy Root", 0, Location.CLASSROOM), null)
+            new MedalResult(null, null)
         );
         predictionTable.setRoot(root);
+
+        for (Location location : Location.values()) {
+            Duelist locationDuelist = Duelist.dummyLocationDuelist(location);
+            root.getChildren().add(new TreeItem<>(new MedalResult(locationDuelist, null)));
+        }
 
         predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResult, String> param) ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistName())
