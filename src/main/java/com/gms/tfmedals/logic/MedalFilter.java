@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-final class MedalFilter {
+public final class MedalFilter {
     private final static long RNG_MULT = 0x5851F42D4C957F2DL;
     private final static long RNG_INC = 1;
     private final static long TASK_INCREMENT_SIZE = 0x800000;
@@ -19,7 +19,7 @@ final class MedalFilter {
     private final long[] medalIncs;
     private final int[] medalRolls;
 
-    MedalFilter(List<MedalResult> medalResults) {
+    public MedalFilter(List<MedalResult> medalResults) {
         if (hasDuplicateDuelist(medalResults)) {
             throw new IllegalArgumentException("Duplicate duelist");
         }
@@ -64,7 +64,7 @@ final class MedalFilter {
         return inc;
     }
 
-    FilterResult results(SeedRange range) {
+    public FilterResult results(SeedRange range) {
         ExecutorService executor = Executors.newWorkStealingPool();
         List<Callable<FilterResult>> callables = callablesList(range);
         return getResultFromCallables(executor, callables);

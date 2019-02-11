@@ -3,7 +3,7 @@ package com.gms.tfmedals.logic;
 import java.util.List;
 import java.util.OptionalLong;
 
-final class FilterResult {
+public final class FilterResult {
     private long firstSeed = 0;
     private boolean hasSeed = false;
     private long count = 0;
@@ -11,7 +11,7 @@ final class FilterResult {
     FilterResult() {
     }
 
-    OptionalLong getFirstSeed() {
+    public OptionalLong getFirstSeed() {
         if (!hasSeed) {
             return OptionalLong.empty();
         } else {
@@ -19,7 +19,7 @@ final class FilterResult {
         }
     }
 
-    long getCount() {
+    public long getCount() {
         return count;
     }
 

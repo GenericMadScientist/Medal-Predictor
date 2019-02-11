@@ -23,7 +23,7 @@
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></TableView>
-            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePredictButtonAction" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
             <HBox prefWidth="200.0" spacing="5.0">
                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />

@@ -1,7 +1,6 @@
 package com.gms.tfmedals.gui;
 
-import com.gms.tfmedals.logic.Duelist;
-import com.gms.tfmedals.logic.MedalResult;
+import com.gms.tfmedals.logic.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,8 +11,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 public class AppController {
-    private final ObservableList<MedalResult> medals = initMedalResults();
-
+    private final ObservableList<MedalResult> medals = initialMedalResults();
 
     @FXML
     private TableView<MedalResult> medalTable;
@@ -27,7 +25,7 @@ public class AppController {
     public AppController() {
     }
 
-    private static ObservableList<MedalResult> initMedalResults() {
+    private static ObservableList<MedalResult> initialMedalResults() {
         return FXCollections.observableArrayList(
             Duelist.allDuelists().stream().map(duelist -> new MedalResult(duelist, null))
                 .toArray(MedalResult[]::new)
@@ -50,6 +48,15 @@ public class AppController {
         duelistColumn.setCellValueFactory(new PropertyValueFactory<>("duelistName"));
         medalColumn.setCellValueFactory(new PropertyValueFactory<>("medals"));
         medalTable.setItems(medals);
+    }
+
+    @FXML
+    private void handlePredictButtonAction() {
+        MedalFilter filter = new MedalFilter(medals);
+        SeedRange range = new PS2SeedRange();
+        FilterResult results = filter.results(range);
+        System.out.println(results.getCount());
+        System.out.println(results.getFirstSeed());
     }
 
     private class MedalStringConverter extends StringConverter<Integer> {
