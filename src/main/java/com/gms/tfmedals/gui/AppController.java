@@ -11,6 +11,8 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.util.Collection;
@@ -127,6 +129,15 @@ public final class AppController {
                 root.getChildren().add(locationNode);
             }
         }
+    }
+
+    @FXML
+    private void handleOptionsButtonAction() throws Exception {
+        Stage stage = new Stage();
+        stage.initOwner(medalTable.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        OptionsFXML optionsMenu = new OptionsFXML();
+        optionsMenu.start(stage);
     }
 
     private class MedalStringConverter extends StringConverter<Integer> {
