@@ -189,7 +189,7 @@ public final class AppController {
         Stage stage = new Stage();
         stage.initOwner(medalTable.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
-        OptionsFXML optionsMenu = new OptionsFXML();
+        OptionsFXML optionsMenu = new OptionsFXML(options);
         optionsMenu.start(stage);
     }
 
