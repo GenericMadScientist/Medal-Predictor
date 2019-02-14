@@ -19,8 +19,8 @@ class MedalResultPairTest {
     @Test
     void getDuelistNames_ShouldReturnBothNames() {
         MedalResultPair pair = new MedalResultPair(
-            new MedalResult(new Duelist("A", 7, Location.CLIFF), 1),
-            new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 2),
+            new MedalResult(new Duelist("A", 7), 1),
+            new MedalResult(new Duelist("B", 8), 2),
             Location.CLASSROOM
         );
         assertEquals(pair.getDuelistNames(), "A\nB");
@@ -29,8 +29,8 @@ class MedalResultPairTest {
     @Test
     void getMedalsString_ShouldReturnBothMedals() {
         MedalResultPair pair = new MedalResultPair(
-            new MedalResult(new Duelist("A", 7, Location.CLIFF), 1),
-            new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 2),
+            new MedalResult(new Duelist("A", 7), 1),
+            new MedalResult(new Duelist("B", 8), 2),
             Location.CLASSROOM
         );
         assertEquals(pair.getMedalsString(), "1\n2");
@@ -38,10 +38,10 @@ class MedalResultPairTest {
 
     @Test
     void getMedalsString_WithMedalsChangedAfter_ShouldReturnOldMedals() {
-        MedalResult resultOne = new MedalResult(new Duelist("A", 7, Location.CLIFF), 1);
+        MedalResult resultOne = new MedalResult(new Duelist("A", 7), 1);
         MedalResultPair pair = new MedalResultPair(
             resultOne,
-            new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 2),
+            new MedalResult(new Duelist("B", 8), 2),
             Location.CLASSROOM
         );
         resultOne.setMedals(3);
@@ -51,8 +51,8 @@ class MedalResultPairTest {
     @Test
     void getMedalYield_WithMedalsThreeAndFour_ShouldReturnFour() {
         MedalResultPair pair = new MedalResultPair(
-            new MedalResult(new Duelist("A", 7, Location.CLIFF), 3),
-            new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 4),
+            new MedalResult(new Duelist("A", 7), 3),
+            new MedalResult(new Duelist("B", 8), 4),
             Location.CLASSROOM
         );
         assertEquals(pair.getMedalYield(), 4);
@@ -61,8 +61,8 @@ class MedalResultPairTest {
     @Test
     void getLocation_ShouldReturnLocation() {
         MedalResultPair pair = new MedalResultPair(
-            new MedalResult(new Duelist("A", 7, Location.CLIFF), 1),
-            new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 2),
+            new MedalResult(new Duelist("A", 7), 1),
+            new MedalResult(new Duelist("B", 8), 2),
             Location.CLASSROOM
         );
         assertEquals(pair.getLocation(), Location.CLASSROOM);
