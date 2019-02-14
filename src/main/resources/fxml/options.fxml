@@ -34,7 +34,7 @@
             <RadioButton fx:id="pspToggle" mnemonicParsing="false" text="PSP" toggleGroup="$consoleGroup" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Console" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
             <Label text="Partner" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ComboBox fx:id="partnerComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Label text="Filter out low medal counts?" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <CheckBox fx:id="filterCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label text="PSP Timer Delay" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />

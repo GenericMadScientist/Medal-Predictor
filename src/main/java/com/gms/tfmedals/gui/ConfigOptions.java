@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 final class ConfigOptions {
     private final ObjectProperty<Console> console = new SimpleObjectProperty<>(Console.PS2);
-    private final StringProperty partner = new SimpleStringProperty("");
+    private final StringProperty partner = new SimpleStringProperty("-");
     private final BooleanProperty filterLowMedals = new SimpleBooleanProperty(false);
     private final IntegerProperty pspTimerDelay = new SimpleIntegerProperty(0);
     private final IntegerProperty pspTimerUncertainty = new SimpleIntegerProperty(0);

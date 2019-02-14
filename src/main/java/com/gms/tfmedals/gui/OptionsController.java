@@ -1,8 +1,12 @@
 package com.gms.tfmedals.gui;
 
+import com.gms.tfmedals.logic.Duelist;
 import javafx.beans.binding.ObjectBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 
 public final class OptionsController {
@@ -13,6 +17,9 @@ public final class OptionsController {
 
     @FXML
     private RadioButton pspToggle;
+
+    @FXML
+    private ComboBox<String> partnerComboBox;
 
     @FXML
     private CheckBox filterCheckBox;
@@ -36,6 +43,7 @@ public final class OptionsController {
             ps2Toggle.selectedProperty().set(options.getConsole().equals(Console.PS2));
             pspToggle.selectedProperty().set(options.getConsole().equals(Console.PSP));
             filterCheckBox.selectedProperty().set(options.getFilterLowMedals());
+            partnerComboBox.getSelectionModel().select(options.getPartner());
         }
     }
 
@@ -53,10 +61,14 @@ public final class OptionsController {
             };
             options.consoleProperty().bind(cb);
             options.filterLowMedalsProperty().bind(filterCheckBox.selectedProperty());
+            options.partnerProperty().bind(partnerComboBox.getSelectionModel().selectedItemProperty());
         }
     }
 
     @FXML
     private void initialize() {
+        ObservableList<String> partners = FXCollections.observableArrayList("-");
+        partners.addAll(Duelist.allPartners());
+        partnerComboBox.setItems(partners);
     }
 }
