@@ -212,8 +212,6 @@ public final class AppController {
             double timeDiffInSecs = ((int) (time - seed)) / 1000000.0;
             timeOffLabel.setText("Time off: "
                 + new DecimalFormat("#.00#").format(timeDiffInSecs) + 's');
-            System.out.println(options.getLastTime());
-            System.out.println(seed);
         }
     }
 
