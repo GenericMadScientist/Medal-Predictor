@@ -1,6 +1,7 @@
 package com.gms.tfmedals.gui;
 
 import com.gms.tfmedals.logic.*;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,11 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,7 +63,7 @@ public final class AppController {
     @FXML
     private Label timeOffLabel;
 
-    private KeyCode lastKeyCode = null;
+    private String lastKey = null;
 
     public AppController() throws IOException {
         Path path = Paths.get("options.json");
@@ -102,13 +102,12 @@ public final class AppController {
     }
 
     private void configureMedalsTable() {
-        medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        medalColumn.setCellFactory(x -> new MedalEditingCell());
         medalColumn.setOnEditCommit(event -> {
             int row = event.getTablePosition().getRow();
             event.getTableView().getItems().get(row).setMedals(event.getNewValue());
             if ((row + 1) < medals.size()) {
-                medalTable.getSelectionModel().select(row + 1, medalColumn);
-                medalTable.getFocusModel().focus(row + 1, medalColumn);
+                medalTable.getSelectionModel().selectBelowCell();
                 medalTable.scrollTo(row);
             }
         });
@@ -123,6 +122,7 @@ public final class AppController {
         medalTable.setOnKeyPressed(event -> {
             if (event.getCode().isDigitKey() && (medalTable.getEditingCell() == null)) {
                 if (medalTable.getSelectionModel().getSelectedIndex() != -1) {
+                    lastKey = event.getText();
                     medalTable.edit(medalTable.getSelectionModel().getSelectedIndex(), medalColumn);
                     medalTable.getFocusModel().getFocusedCell();
                 }
@@ -246,5 +246,89 @@ public final class AppController {
         stage.initModality(Modality.APPLICATION_MODAL);
         OptionsFXML optionsMenu = new OptionsFXML(options);
         optionsMenu.start(stage);
+    }
+
+    /* Life-saving cell I took from StackOverflow. See
+       https://stackoverflow.com/questions/21987552/how-to-make-a-javafx-tableview-cell-editable-without-first-pressing-enter
+     */
+    private class MedalEditingCell extends TableCell<MedalResult, Integer> {
+        private TextField textField;
+
+        @Override
+        public void startEdit() {
+            if (!isEmpty()) {
+                super.startEdit();
+                createTextField();
+                setText(null);
+                setGraphic(textField);
+                Platform.runLater(() -> textField.requestFocus());
+                if (lastKey != null) {
+                    textField.setText(lastKey);
+                    lastKey = null;
+                    Platform.runLater(() -> {
+                        textField.deselect();
+                        textField.end();
+                    });
+                }
+            }
+        }
+
+        @Override
+        public void cancelEdit() {
+            super.cancelEdit();
+            setText(getItem().toString());
+            setGraphic(null);
+        }
+
+        @Override
+        public void updateItem(Integer item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty) {
+                setText(null);
+                setGraphic(null);
+            } else if (isEditing()) {
+                if (textField != null) {
+                    textField.setText(getString());
+                }
+                setText(null);
+                setGraphic(textField);
+            } else {
+                setText(getString());
+                setGraphic(null);
+            }
+        }
+
+        private void createTextField() {
+            textField = new TextField(getString());
+
+            textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
+                if (!arg2) {
+                    commit();
+                }
+            });
+
+            textField.setOnKeyReleased(t -> {
+                if (t.getCode() == KeyCode.ENTER) {
+                    commit();
+                } else if (t.getCode() == KeyCode.ESCAPE) {
+                    cancelEdit();
+                }
+            });
+
+            textField.addEventFilter(KeyEvent.KEY_RELEASED, t -> {
+                if (t.getCode() == KeyCode.DELETE) {
+                    t.consume();
+                }
+            });
+        }
+
+        private void commit() {
+            commitEdit(textField.getText().isEmpty() ? null : Integer.valueOf(textField.getText()));
+        }
+
+        private String getString() {
+            return getItem() == null ? "" : getItem().toString();
+        }
     }
 }
