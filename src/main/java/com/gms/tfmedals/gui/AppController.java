@@ -85,6 +85,10 @@ public final class AppController {
         );
     }
 
+    ConfigOptions getOptions() {
+        return options;
+    }
+
     @FXML
     private void initialize() {
         configureMedalsTable();
