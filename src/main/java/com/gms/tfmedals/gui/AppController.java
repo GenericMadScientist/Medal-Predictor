@@ -184,6 +184,7 @@ public final class AppController {
                 TreeItem<MedalResultPair> locationNode = new TreeItem<>(
                     MedalResultPair.dummyPair(location.toString())
                 );
+                locationNode.setExpanded(true);
                 locationNode.getChildren().addAll(resultsInLocation);
                 root.getChildren().add(locationNode);
             }
