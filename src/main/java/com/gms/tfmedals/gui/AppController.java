@@ -6,10 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
@@ -63,6 +63,8 @@ public final class AppController {
     @FXML
     private Label timeOffLabel;
 
+    private KeyCode lastKeyCode = null;
+
     public AppController() throws IOException {
         Path path = Paths.get("options.json");
 
@@ -101,12 +103,15 @@ public final class AppController {
 
     private void configureMedalsTable() {
         medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        medalColumn.setOnEditCommit(
-            (CellEditEvent<MedalResult, Integer> t) ->
-                (t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())
-                ).setMedals(t.getNewValue())
-        );
+        medalColumn.setOnEditCommit(event -> {
+            int row = event.getTablePosition().getRow();
+            event.getTableView().getItems().get(row).setMedals(event.getNewValue());
+            if ((row + 1) < medals.size()) {
+                medalTable.getSelectionModel().select(row + 1, medalColumn);
+                medalTable.getFocusModel().focus(row + 1, medalColumn);
+                medalTable.scrollTo(row);
+            }
+        });
 
         duelistColumn.setReorderable(false);
         medalColumn.setReorderable(false);
@@ -115,13 +120,12 @@ public final class AppController {
         medalColumn.setCellValueFactory(new PropertyValueFactory<>("medals"));
         medalTable.setItems(medals);
 
-        medalColumn.setOnEditCommit(event -> {
-            int newRow = medalTable.getEditingCell().getRow() + 1;
-            event.getRowValue().setMedals(event.getNewValue());
-            if (newRow < medals.size()) {
-                medalTable.getSelectionModel().select(newRow, medalColumn);
-                medalTable.getFocusModel().focus(newRow, medalColumn);
-                medalTable.scrollTo(newRow - 1);
+        medalTable.setOnKeyPressed(event -> {
+            if (event.getCode().isDigitKey() && (medalTable.getEditingCell() == null)) {
+                if (medalTable.getSelectionModel().getSelectedIndex() != -1) {
+                    medalTable.edit(medalTable.getSelectionModel().getSelectedIndex(), medalColumn);
+                    medalTable.getFocusModel().getFocusedCell();
+                }
             }
         });
     }
