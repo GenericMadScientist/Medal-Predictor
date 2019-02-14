@@ -44,4 +44,14 @@ class DuelistTest {
     void allDuelists_ShouldGiveListOfSize88() {
         assertEquals(Duelist.allDuelists().size(), 88);
     }
+
+    @Test
+    void allPartners_ShouldStartWithAbidos() {
+        assertEquals(Duelist.allPartners().get(0), "Abidos the Third");
+    }
+
+    @Test
+    void allPartners_ShouldGiveListOfSize108() {
+        assertEquals(Duelist.allPartners().size(), 108);
+    }
 }

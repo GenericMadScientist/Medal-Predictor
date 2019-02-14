@@ -135,7 +135,6 @@ public final class Duelist {
     };
 
     private final static String[] PARTNERS = new String[] {
-        "-",
         "Abidos the Third",
         "Aite",
         "Alexis Rhodes",
