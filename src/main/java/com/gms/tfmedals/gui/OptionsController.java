@@ -1,5 +1,7 @@
 package com.gms.tfmedals.gui;
 
+import com.gms.tfmedals.logic.ConfigOptions;
+import com.gms.tfmedals.logic.Console;
 import com.gms.tfmedals.logic.Duelist;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.ObjectBinding;

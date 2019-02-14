@@ -1,5 +1,6 @@
 package com.gms.tfmedals.gui;
 
+import com.gms.tfmedals.logic.ConfigOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public final class OptionsFXML extends Application {
-    ConfigOptions options;
+    private ConfigOptions options;
 
     OptionsFXML(ConfigOptions options) {
         this.options = options;

@@ -1,5 +1,6 @@
 package com.gms.tfmedals.gui;
 
+import com.gms.tfmedals.logic.ConfigOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

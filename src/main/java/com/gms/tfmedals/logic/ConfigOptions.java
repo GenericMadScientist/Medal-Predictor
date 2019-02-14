@@ -1,19 +1,19 @@
-package com.gms.tfmedals.gui;
+package com.gms.tfmedals.logic;
 
 import javafx.beans.property.*;
 import org.json.JSONObject;
 
-final class ConfigOptions {
+public final class ConfigOptions {
     private final ObjectProperty<Console> console = new SimpleObjectProperty<>(Console.PS2);
     private final StringProperty partner = new SimpleStringProperty("-");
     private final BooleanProperty filterLowMedals = new SimpleBooleanProperty(false);
     private final IntegerProperty pspTimerDelay = new SimpleIntegerProperty(0);
     private final IntegerProperty pspTimerUncertainty = new SimpleIntegerProperty(0);
 
-    ConfigOptions() {
+    public ConfigOptions() {
     }
 
-    void readFromJson(JSONObject json) {
+    public void readFromJson(JSONObject json) {
         Console newConsole = json.getEnum(Console.class, "console");
         String newPartner = json.getString("partner");
         boolean newFilterLowMedals = json.getBoolean("filterLowMedals");
@@ -27,7 +27,7 @@ final class ConfigOptions {
         pspTimerUncertainty.set(newPspTimerUncertainty);
     }
 
-    JSONObject toJson() {
+    public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("console", console.getValue());
         json.put("partner", partner.getValue());
@@ -41,20 +41,12 @@ final class ConfigOptions {
         return console.getValue();
     }
 
-    public void setConsole(Console console) {
-        this.console.setValue(console);
-    }
-
     public ObjectProperty<Console> consoleProperty() {
         return console;
     }
 
     public String getPartner() {
         return partner.getValue();
-    }
-
-    public void setPartner(String partner) {
-        this.partner.setValue(partner);
     }
 
     public StringProperty partnerProperty() {
@@ -65,10 +57,6 @@ final class ConfigOptions {
         return filterLowMedals.get();
     }
 
-    public void setFilterLowMedals(boolean filterLowMedals) {
-        this.filterLowMedals.set(filterLowMedals);
-    }
-
     public BooleanProperty filterLowMedalsProperty() {
         return filterLowMedals;
     }
@@ -77,20 +65,12 @@ final class ConfigOptions {
         return pspTimerDelay.get();
     }
 
-    public void setPspTimerDelay(int pspTimerDelay) {
-        this.pspTimerDelay.set(pspTimerDelay);
-    }
-
     public IntegerProperty pspTimerDelayProperty() {
         return pspTimerDelay;
     }
 
     public int getPspTimerUncertainty() {
         return pspTimerUncertainty.get();
-    }
-
-    public void setPspTimerUncertainty(int pspTimerUncertainty) {
-        this.pspTimerUncertainty.set(pspTimerUncertainty);
     }
 
     public IntegerProperty pspTimerUncertaintyProperty() {
