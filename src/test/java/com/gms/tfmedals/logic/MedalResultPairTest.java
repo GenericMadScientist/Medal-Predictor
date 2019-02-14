@@ -13,9 +13,11 @@ class MedalResultPairTest {
         MedalResultPair dummyResult = MedalResultPair.dummyPair("header");
         assertEquals(dummyResult.getDuelistNames(), "header");
         assertEquals(dummyResult.getMedalYield(), 0);
+        assertNull(dummyResult.getHousesString());
         assertNull(dummyResult.getMedalsString());
         assertNull(dummyResult.getLocation());
     }
+
     @Test
     void getDuelistNames_ShouldReturnBothNames() {
         MedalResultPair pair = new MedalResultPair(
@@ -24,6 +26,17 @@ class MedalResultPairTest {
             Location.CLASSROOM
         );
         assertEquals(pair.getDuelistNames(), "A\nB");
+    }
+
+    @Test
+    void getHousesString_ShouldReturnBothHouses() {
+        MedalResultPair pair = new MedalResultPair(
+            new MedalResult(new Duelist("A", 7, House.MAIN_CHARACTER), 1),
+            new MedalResult(new Duelist("B", 8, House.MAIN_CHARACTER), 2),
+            Location.CLASSROOM
+        );
+        assertEquals(pair.getHousesString(),
+            House.MAIN_CHARACTER.toString() + '\n' + House.MAIN_CHARACTER);
     }
 
     @Test

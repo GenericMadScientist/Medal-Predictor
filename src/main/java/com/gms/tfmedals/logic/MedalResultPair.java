@@ -7,11 +7,13 @@ public final class MedalResultPair {
     private final int medalsYield;
     private final Location location;
     private final String duelistNames;
+    private final String housesString;
     private final String medalsString;
 
     MedalResultPair(MedalResult left, MedalResult right, Location location) {
         this.location = location;
         duelistNames = left.getDuelistName() + '\n' + right.getDuelistName();
+        housesString = left.getHouse().toString() + '\n' + right.getHouse();
         medalsString = left.getMedals().toString() + '\n' + right.getMedals();
         medalsYield = Math.max(left.getMedals(), right.getMedals());
     }
@@ -22,6 +24,7 @@ public final class MedalResultPair {
 
     private MedalResultPair(String dummyName) {
         duelistNames = dummyName;
+        housesString = null;
         location = null;
         medalsString = null;
         medalsYield = 0;
@@ -29,6 +32,10 @@ public final class MedalResultPair {
 
     public String getDuelistNames() {
         return duelistNames;
+    }
+
+    public String getHousesString() {
+        return housesString;
     }
 
     public String getMedalsString() {

@@ -48,6 +48,9 @@ public final class AppController {
     private TreeTableColumn<MedalResultPair, String> predictionDuelistColumn;
 
     @FXML
+    private TreeTableColumn<MedalResultPair, String> predictionGroupColumn;
+
+    @FXML
     private TreeTableColumn<MedalResultPair, String> predictionMedalColumn;
 
     @FXML
@@ -109,10 +112,14 @@ public final class AppController {
         predictionTable.setRoot(root);
 
         predictionDuelistColumn.setReorderable(false);
+        predictionGroupColumn.setReorderable(false);
         predictionMedalColumn.setReorderable(false);
 
         predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistNames())
+        );
+        predictionGroupColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+            new ReadOnlyStringWrapper(param.getValue().getValue().getHousesString())
         );
         predictionMedalColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getMedalsString())

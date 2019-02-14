@@ -11,15 +11,15 @@ enum House {
     public String toString() {
         switch (this) {
             case SLIFER_RED:
-                return "Slifer Red";
+                return "SR";
             case RA_YELLOW:
-                return "Ra Yellow";
+                return "RY";
             case OBELISK_BLUE:
-                return "Obelisk Blue";
+                return "OB";
             case TEACHER:
-                return "Teacher";
+                return "T";
             case MAIN_CHARACTER:
-                return "Main Character";
+                return "MC";
         }
 
         throw new IllegalArgumentException("Impossible House value");
