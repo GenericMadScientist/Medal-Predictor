@@ -26,8 +26,8 @@
                </columnResizePolicy></TableView>
             <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePredictButtonAction" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
             <HBox prefWidth="200.0" spacing="5.0">
-               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Record Current Time" HBox.hgrow="ALWAYS" />
-               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Current Current Time" HBox.hgrow="ALWAYS" />
+               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleRecordTimeAction" text="Record Current Time" HBox.hgrow="ALWAYS" />
+               <Button fx:id="handleClearTimeAction" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Clear Current Time" HBox.hgrow="ALWAYS" />
             </HBox>
             <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOptionsButtonAction" text="Options" VBox.vgrow="ALWAYS" />
          </VBox>
@@ -45,7 +45,7 @@
             </TreeTableView>
             <Label fx:id="fiveCountLabel" text="Number of 5s: -" VBox.vgrow="ALWAYS" />
             <Label fx:id="matchingSeedsLabel" text="Number of matching seeds: -" VBox.vgrow="ALWAYS" />
-            <Label text="Time off: -" VBox.vgrow="ALWAYS" />
+            <Label fx:id="timeOffLabel" text="Time off: -" VBox.vgrow="ALWAYS" />
          </VBox>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -58,6 +59,9 @@ public final class AppController {
 
     @FXML
     private Label fiveCountLabel;
+
+    @FXML
+    private Label timeOffLabel;
 
     public AppController() throws IOException {
         Path path = Paths.get("options.json");
@@ -134,6 +138,7 @@ public final class AppController {
     private void handlePredictButtonAction() {
         root.getChildren().clear();
         fiveCountLabel.setText("Number of 5s: -");
+        timeOffLabel.setText("Time off: -");
 
         MedalFilter filter = new MedalFilter(medals);
         SeedRange range = seedRangeFromOptions();
@@ -147,14 +152,18 @@ public final class AppController {
             long numberOfFives = predictions.stream().filter(x -> x.getMedalYield() == 5).count();
             fiveCountLabel.setText("Number of 5s: " + numberOfFives);
             fillInPredictions(predictions);
+            setTimeOffText(seed);
         }
     }
 
     private SeedRange seedRangeFromOptions() {
         if (options.getConsole().equals(Console.PS2)) {
             return new PS2SeedRange();
-        } else {
+        } else if (options.getLastTime() == null) {
             return new PSPSeedRange();
+        } else {
+            return new PSPSeedRange(options.getLastTime() - 1000000 * options.getPspTimerDelay(),
+                1000000 * options.getPspTimerUncertainty());
         }
     }
 
@@ -195,6 +204,27 @@ public final class AppController {
                 root.getChildren().add(locationNode);
             }
         }
+    }
+
+    private void setTimeOffText(long seed) {
+        if (options.getConsole().equals(Console.PSP) || (options.getLastTime() != null)) {
+            long time = options.getLastTime() - 1000000 * options.getPspTimerDelay();
+            double timeDiffInSecs = ((int) (time - seed)) / 1000000.0;
+            timeOffLabel.setText("Time off: "
+                + new DecimalFormat("#.00#").format(timeDiffInSecs) + 's');
+            System.out.println(options.getLastTime());
+            System.out.println(seed);
+        }
+    }
+
+    @FXML
+    private void handleRecordTimeAction() {
+        options.setLastTime(System.nanoTime() / 1000);
+    }
+
+    @FXML
+    private void handleClearTimeAction() {
+        options.setLastTime(null);
     }
 
     @FXML

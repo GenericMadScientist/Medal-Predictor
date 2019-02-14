@@ -9,6 +9,7 @@ public final class ConfigOptions {
     private final BooleanProperty filterLowMedals = new SimpleBooleanProperty(false);
     private final IntegerProperty pspTimerDelay = new SimpleIntegerProperty(0);
     private final IntegerProperty pspTimerUncertainty = new SimpleIntegerProperty(0);
+    private Long lastTime = null;
 
     public ConfigOptions() {
     }
@@ -75,5 +76,13 @@ public final class ConfigOptions {
 
     public IntegerProperty pspTimerUncertaintyProperty() {
         return pspTimerUncertainty;
+    }
+
+    public Long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Long newLastTime) {
+        lastTime = newLastTime;
     }
 }
