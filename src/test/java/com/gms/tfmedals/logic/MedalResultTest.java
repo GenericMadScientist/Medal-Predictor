@@ -53,4 +53,10 @@ class MedalResultTest {
         result.setMedals(5);
         assertEquals(result.getMedals(), Integer.valueOf(5));
     }
+
+    @Test
+    void duelistResult_WithIdOneAndSeedZero_ShouldGiveZeroMedals() {
+        MedalResult result = MedalResult.duelistResult(new Duelist("A", 1, Location.CLIFF), 0);
+        assertEquals(result.getMedals(), Integer.valueOf(1));
+    }
 }
