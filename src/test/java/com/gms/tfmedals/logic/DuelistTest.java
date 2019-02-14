@@ -36,8 +36,8 @@ class DuelistTest {
     }
 
     @Test
-    void allDuelists_ShouldStartWithJaden() {
-        assertEquals(Duelist.allDuelists().get(0).getName(), "Jaden Yuki");
+    void allDuelists_ShouldStartWithChumley() {
+        assertEquals(Duelist.allDuelists().get(0).getName(), "Chumley Huffington");
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.gms.tfmedals.logic;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,5 +48,12 @@ class MedalResultPairTest {
             Location.CLASSROOM
         );
         assertEquals(pair.getLocation(), Location.CLASSROOM);
+    }
+
+    @Test
+    void resultsFromSeed_WithSeedZero_ShouldReturnCorrectMedals() {
+        List<MedalResultPair> results = MedalResultPair.resultsFromSeed(0);
+        assertEquals(results.get(0).getMedals(), Arrays.asList(4, 3));
+        assertEquals(results.size(), 44);
     }
 }
