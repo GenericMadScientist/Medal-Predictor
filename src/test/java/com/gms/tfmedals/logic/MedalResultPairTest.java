@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MedalResultPairTest {
     @Test
@@ -79,6 +78,18 @@ class MedalResultPairTest {
             Location.CLASSROOM
         );
         assertEquals(pair.getLocation(), Location.CLASSROOM);
+    }
+
+    @Test
+    void hasMember_ShouldOnlyReturnTrueForMembers() {
+        MedalResultPair pair = new MedalResultPair(
+            new MedalResult(new Duelist("A", 7, House.MAIN_CHARACTER), 1),
+            new MedalResult(new Duelist("B", 8, House.MAIN_CHARACTER), 2),
+            Location.CLASSROOM
+        );
+        assertTrue(pair.hasMember("A"));
+        assertTrue(pair.hasMember("B"));
+        assertFalse(pair.hasMember("C"));
     }
 
     @Test

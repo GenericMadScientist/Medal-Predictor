@@ -159,7 +159,9 @@ public final class AppController {
     }
 
     private Collection<MedalResultPair> predictionsFromSeed(long seed) {
-        Collection<MedalResultPair> results = MedalResultPair.resultsFromSeed(seed);
+        Collection<MedalResultPair> results = MedalResultPair.resultsFromSeed(seed).stream()
+            .filter(x -> !x.hasMember(options.getPartner()))
+            .collect(Collectors.toList());
         if (!options.getFilterLowMedals()) {
             return results;
         }

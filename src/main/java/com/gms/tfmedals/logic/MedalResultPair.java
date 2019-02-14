@@ -1,7 +1,9 @@
 package com.gms.tfmedals.logic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class MedalResultPair {
     private final int medalsYield;
@@ -9,6 +11,7 @@ public final class MedalResultPair {
     private final String duelistNames;
     private final String housesString;
     private final String medalsString;
+    private final Set<String> members;
 
     MedalResultPair(MedalResult left, MedalResult right, Location location) {
         this.location = location;
@@ -16,6 +19,10 @@ public final class MedalResultPair {
         housesString = left.getHouse().toString() + '\n' + right.getHouse();
         medalsString = left.getMedals().toString() + '\n' + right.getMedals();
         medalsYield = Math.max(left.getMedals(), right.getMedals());
+
+        members = new HashSet<>();
+        members.add(left.getDuelistName());
+        members.add(right.getDuelistName());
     }
 
     public static MedalResultPair dummyPair(String header) {
@@ -28,10 +35,15 @@ public final class MedalResultPair {
         location = null;
         medalsString = null;
         medalsYield = 0;
+        members = null;
     }
 
     public String getDuelistNames() {
         return duelistNames;
+    }
+
+    public boolean hasMember(String member) {
+        return members.contains(member);
     }
 
     public String getHousesString() {
