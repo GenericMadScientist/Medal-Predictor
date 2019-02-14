@@ -174,6 +174,7 @@ public final class AppController {
                     matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
                     if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
                         long seed = results.getFirstSeed().getAsLong();
+                        System.out.println(seed);
                         Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
                         long numberOfFives = predictions.stream()
                             .filter(x -> x.getMedalYield() == 5).count();
@@ -239,7 +240,7 @@ public final class AppController {
     }
 
     private void setTimeOffText(long seed) {
-        if (options.getConsole().equals(Console.PSP) || (options.getLastTime() != null)) {
+        if (options.getConsole().equals(Console.PSP) && (options.getLastTime() != null)) {
             long time = options.getLastTime() - 1000000 * options.getPspTimerDelay();
             double timeDiffInSecs = ((int) (time - seed)) / 1000000.0;
             timeOffLabel.setText("Time off: "
@@ -249,7 +250,7 @@ public final class AppController {
 
     @FXML
     private void handleRecordTimeAction() {
-        options.setLastTime(System.nanoTime() / 1000);
+        options.setLastTime(System.currentTimeMillis() * 1000);
     }
 
     @FXML
