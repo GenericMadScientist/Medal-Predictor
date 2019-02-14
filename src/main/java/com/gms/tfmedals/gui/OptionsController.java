@@ -86,7 +86,11 @@ public final class OptionsController {
 
                 @Override
                 protected int computeValue() {
-                    return Integer.valueOf(timerDelayField.getText());
+                    try {
+                        return Integer.valueOf(timerDelayField.getText());
+                    } catch (NumberFormatException ignored) {
+                        return 0;
+                    }
                 }
             };
             options.pspTimerDelayProperty().bind(delayProperty);
@@ -98,7 +102,11 @@ public final class OptionsController {
 
                 @Override
                 protected int computeValue() {
-                    return Integer.valueOf(timerUncertaintyField.getText());
+                    try {
+                        return Integer.valueOf(timerUncertaintyField.getText());
+                    } catch (NumberFormatException ignored) {
+                        return 0;
+                    }
                 }
             };
             options.pspTimerUncertaintyProperty().bind(uncertaintyProperty);

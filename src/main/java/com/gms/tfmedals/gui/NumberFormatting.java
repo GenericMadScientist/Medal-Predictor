@@ -8,10 +8,9 @@ final class NumberFormatting {
     }
 
     static TextFormatter<Integer> getFormatter() {
-        return new TextFormatter<>(new IntegerStringConverter(), 0, change ->
-        {
+        return new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
             String input = change.getControlNewText();
-            if (input.matches("-?([1-9][0-9]*)?")) {
+            if (input.matches("-?(([1-9][0-9]*)?|0)")) {
                 return change;
             } else {
                 return null;
