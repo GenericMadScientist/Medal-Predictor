@@ -32,6 +32,17 @@ class MedalResultTest {
     }
 
     @Test
+    void copyConstructor_ShouldMakeNewCopy() {
+        MedalResult resultOne = new MedalResult(new Duelist("A", 7, Location.CLIFF), 1);
+        MedalResult resultTwo = new MedalResult(resultOne);
+
+        assertEquals(resultOne.getDuelistId(), resultTwo.getDuelistId());
+        assertEquals(resultOne.getDuelistName(), resultTwo.getDuelistName());
+        assertEquals(resultOne.getLocation(), resultTwo.getLocation());
+        assertEquals(resultOne.getMedals(), resultTwo.getMedals());
+    }
+
+    @Test
     void setMedals_WithInvalidMedals_ShouldThrowIllegalArgumentException() {
         MedalResult result = new MedalResult(new Duelist("A", 7, Location.CLIFF), 4);
         assertThrows(IllegalArgumentException.class, () -> result.setMedals(0));

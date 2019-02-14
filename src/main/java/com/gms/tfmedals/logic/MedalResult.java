@@ -13,6 +13,11 @@ public final class MedalResult {
         this.medals = medals;
     }
 
+    MedalResult(MedalResult result) {
+        duelist = result.duelist;
+        medals = result.medals;
+    }
+
     private static void throwExceptionIfMedalsInvalid(Integer medals) {
         if ((medals != null) && ((medals < 1) || (medals > 5))) {
             throw new IllegalArgumentException("Medals must lie between one and five");
