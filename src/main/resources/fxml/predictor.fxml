@@ -27,7 +27,7 @@
             <Button fx:id="predictMedalsButton" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePredictButtonAction" text="Predict Medals" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
             <HBox prefWidth="200.0" spacing="5.0">
                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleRecordTimeAction" text="Record Current Time" HBox.hgrow="ALWAYS" />
-               <Button fx:id="handleClearTimeAction" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Clear Current Time" HBox.hgrow="ALWAYS" />
+               <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearTimeAction" text="Clear Current Time" HBox.hgrow="ALWAYS" />
             </HBox>
             <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOptionsButtonAction" text="Options" VBox.vgrow="ALWAYS" />
          </VBox>
