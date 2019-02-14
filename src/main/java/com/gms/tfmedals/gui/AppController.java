@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,7 +96,7 @@ public final class AppController {
     }
 
     private void configureMedalsTable() {
-        medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new MedalStringConverter()));
+        medalColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         medalColumn.setOnEditCommit(
             (CellEditEvent<MedalResult, Integer> t) ->
                 (t.getTableView().getItems().get(
@@ -204,25 +204,5 @@ public final class AppController {
         stage.initModality(Modality.APPLICATION_MODAL);
         OptionsFXML optionsMenu = new OptionsFXML(options);
         optionsMenu.start(stage);
-    }
-
-    private class MedalStringConverter extends StringConverter<Integer> {
-        @Override
-        public String toString(Integer integer) {
-            if (integer == null) {
-                return null;
-            } else {
-                return integer.toString();
-            }
-        }
-
-        @Override
-        public Integer fromString(String s) {
-            try {
-                return Integer.valueOf(s);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        }
     }
 }
