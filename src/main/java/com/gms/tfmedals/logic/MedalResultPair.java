@@ -1,28 +1,45 @@
 package com.gms.tfmedals.logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-class MedalResultPair {
-    private final List<MedalResult> results;
+public class MedalResultPair {
+    private final int medalsYield;
     private final Location location;
+    private final String duelistNames;
+    private final String medalsString;
 
     MedalResultPair(MedalResult left, MedalResult right, Location location) {
-        results = Arrays.asList(new MedalResult(left), new MedalResult(right));
         this.location = location;
+        duelistNames = left.getDuelistName() + '\n' + right.getDuelistName();
+        medalsString = left.getMedals().toString() + '\n' + right.getMedals();
+        medalsYield = Math.max(left.getMedals(), right.getMedals());
     }
 
-    List<String> getDuelistNames() {
-        return results.stream().map(MedalResult::getDuelistName).collect(Collectors.toList());
+    public static MedalResultPair dummyPair(String header) {
+        return new MedalResultPair(header);
     }
 
-    List<Integer> getMedals() {
-        return results.stream().map(MedalResult::getMedals).collect(Collectors.toList());
+    private MedalResultPair(String dummyName) {
+        duelistNames = dummyName;
+        location = null;
+        medalsString = null;
+        medalsYield = 0;
     }
 
-    Location getLocation() {
+    public String getDuelistNames() {
+        return duelistNames;
+    }
+
+    public String getMedalsString() {
+        return medalsString;
+    }
+
+    public int getMedalYield() {
+        return medalsYield;
+    }
+
+    public Location getLocation() {
         return location;
     }
 
@@ -33,21 +50,13 @@ class MedalResultPair {
 
         for (int i = 0; i < allLocations.length; i++) {
             results.add(new MedalResultPair(
-                duelistResult(duelists.get(2 * i), seed),
-                duelistResult(duelists.get(2 * i + 1), seed),
+                MedalResult.duelistResult(duelists.get(2 * i), seed),
+                MedalResult.duelistResult(duelists.get(2 * i + 1), seed),
                 allLocations[i]
             ));
         }
 
         return results;
-    }
-
-    private static MedalResult duelistResult(Duelist duelist, long seed) {
-        for (int i = 0; i < duelist.getId(); i++) {
-            seed = MedalRng.nextSeed(seed);
-        }
-        int medals = MedalRng.medalRoll(seed) + 1;
-        return new MedalResult(duelist, medals);
     }
 
     private static final Location[] allLocations = {

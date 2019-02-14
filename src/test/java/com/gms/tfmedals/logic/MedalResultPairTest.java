@@ -19,17 +19,17 @@ class MedalResultPairTest {
     }
 
     @Test
-    void getMedals_ShouldReturnBothMedals() {
+    void getMedalsString_ShouldReturnBothMedals() {
         MedalResultPair pair = new MedalResultPair(
             new MedalResult(new Duelist("A", 7, Location.CLIFF), 1),
             new MedalResult(new Duelist("B", 8, Location.CLASSROOM), 2),
             Location.CLASSROOM
         );
-        assertEquals(pair.getMedals(), Arrays.asList(1, 2));
+        assertEquals(pair.getMedalsString(), "1\n2");
     }
 
     @Test
-    void getMedals_WithMedalsChangedAfter_ShouldReturnOldMedals() {
+    void getMedalsString_WithMedalsChangedAfter_ShouldReturnOldMedals() {
         MedalResult resultOne = new MedalResult(new Duelist("A", 7, Location.CLIFF), 1);
         MedalResultPair pair = new MedalResultPair(
             resultOne,
@@ -37,7 +37,7 @@ class MedalResultPairTest {
             Location.CLASSROOM
         );
         resultOne.setMedals(3);
-        assertEquals(pair.getMedals(), Arrays.asList(1, 2));
+        assertEquals(pair.getMedalsString(), "1\n2");
     }
 
     @Test
@@ -53,7 +53,7 @@ class MedalResultPairTest {
     @Test
     void resultsFromSeed_WithSeedZero_ShouldReturnCorrectMedals() {
         List<MedalResultPair> results = MedalResultPair.resultsFromSeed(0);
-        assertEquals(results.get(0).getMedals(), Arrays.asList(4, 3));
+        assertEquals(results.get(0).getMedalsString(), "4\n3");
         assertEquals(results.size(), 44);
     }
 }

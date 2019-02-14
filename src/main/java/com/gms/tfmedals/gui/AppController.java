@@ -1,7 +1,6 @@
 package com.gms.tfmedals.gui;
 
 import com.gms.tfmedals.logic.*;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,15 +40,15 @@ public final class AppController {
     private TableColumn<MedalResult, Integer> medalColumn;
 
     @FXML
-    private TreeTableView<MedalResult> predictionTable;
+    private TreeTableView<MedalResultPair> predictionTable;
 
-    private final TreeItem<MedalResult> root = new TreeItem<>(new MedalResult(null, null));
-
-    @FXML
-    private TreeTableColumn<MedalResult, String> predictionDuelistColumn;
+    private final TreeItem<MedalResultPair> root = new TreeItem<>(null);
 
     @FXML
-    private TreeTableColumn<MedalResult, Integer> predictionMedalColumn;
+    private TreeTableColumn<MedalResultPair, String> predictionDuelistColumn;
+
+    @FXML
+    private TreeTableColumn<MedalResultPair, String> predictionMedalColumn;
 
     @FXML
     private Label matchingSeedsLabel;
@@ -112,11 +111,11 @@ public final class AppController {
         predictionDuelistColumn.setReorderable(false);
         predictionMedalColumn.setReorderable(false);
 
-        predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResult, String> param) ->
-            new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistName())
+        predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+            new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistNames())
         );
-        predictionMedalColumn.setCellValueFactory((CellDataFeatures<MedalResult, Integer> param) ->
-            new ReadOnlyObjectWrapper<>(param.getValue().getValue().getMedals())
+        predictionMedalColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+            new ReadOnlyStringWrapper(param.getValue().getValue().getMedalsString())
         );
     }
 
@@ -133,8 +132,8 @@ public final class AppController {
 
         if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
             long seed = results.getFirstSeed().getAsLong();
-            Collection<MedalResult> predictions = predictionsFromSeed(seed);
-            long numberOfFives = predictions.stream().filter(x -> x.getMedals() == 5).count();
+            Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
+            long numberOfFives = predictions.stream().filter(x -> x.getMedalYield() == 5).count();
             fiveCountLabel.setText("Number of 5s: " + numberOfFives);
             fillInPredictions(predictions);
         }
@@ -148,18 +147,18 @@ public final class AppController {
         }
     }
 
-    private Collection<MedalResult> predictionsFromSeed(long seed) {
-        Collection<MedalResult> results = MedalResult.resultsFromSeed(seed);
+    private Collection<MedalResultPair> predictionsFromSeed(long seed) {
+        Collection<MedalResultPair> results = MedalResultPair.resultsFromSeed(seed);
         if (!options.getFilterLowMedals()) {
             return results;
         }
 
-        Collection<MedalResult> highResults = Collections.emptyList();
+        Collection<MedalResultPair> highResults = Collections.emptyList();
         int medalThreshold = 4;
 
-        while (highResults.stream().mapToInt(MedalResult::getMedals).sum() < MEDALS_NEEDED) {
+        while (highResults.stream().mapToInt(MedalResultPair::getMedalYield).sum() < MEDALS_NEEDED) {
             final int thresholdCopy = medalThreshold;
-            highResults = results.stream().filter(x -> x.getMedals() > thresholdCopy)
+            highResults = results.stream().filter(x -> x.getMedalYield() > thresholdCopy)
                 .collect(Collectors.toList());
             medalThreshold--;
         }
@@ -167,16 +166,16 @@ public final class AppController {
         return highResults;
     }
 
-    private void fillInPredictions(Collection<MedalResult> predictions) {
+    private void fillInPredictions(Collection<MedalResultPair> predictions) {
         for (Location location : Location.values()) {
-            Collection<TreeItem<MedalResult>> resultsInLocation = predictions.stream()
+            Collection<TreeItem<MedalResultPair>> resultsInLocation = predictions.stream()
                 .filter(x -> x.getLocation().equals(location))
                 .map(TreeItem::new)
                 .collect(Collectors.toList());
 
             if (!resultsInLocation.isEmpty()) {
-                TreeItem<MedalResult> locationNode = new TreeItem<>(
-                    new MedalResult(new Duelist(location.toString(), 0, location), null)
+                TreeItem<MedalResultPair> locationNode = new TreeItem<>(
+                    MedalResultPair.dummyPair(location.toString())
                 );
                 locationNode.getChildren().addAll(resultsInLocation);
                 root.getChildren().add(locationNode);

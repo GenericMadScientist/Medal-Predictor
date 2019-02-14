@@ -1,8 +1,5 @@
 package com.gms.tfmedals.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class MedalResult {
     private final Duelist duelist;
     private Integer medals;
@@ -45,18 +42,11 @@ public final class MedalResult {
         this.medals = medals;
     }
 
-    public static List<MedalResult> resultsFromSeed(long seed) {
-        List<MedalResult> results = new ArrayList<>();
-
-        for (Duelist duelist : Duelist.allDuelists()) {
-            long seedCopy = seed;
-            for (int i = 0; i < duelist.getId(); i++) {
-                seedCopy = MedalRng.nextSeed(seedCopy);;
-            }
-            int medals = MedalRng.medalRoll(seedCopy) + 1;
-            results.add(new MedalResult(duelist, medals));
+    static MedalResult duelistResult(Duelist duelist, long seed) {
+        for (int i = 0; i < duelist.getId(); i++) {
+            seed = MedalRng.nextSeed(seed);
         }
-
-        return results;
+        int medals = MedalRng.medalRoll(seed) + 1;
+        return new MedalResult(duelist, medals);
     }
 }
