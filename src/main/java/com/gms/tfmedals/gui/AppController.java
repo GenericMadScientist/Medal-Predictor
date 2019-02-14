@@ -114,6 +114,16 @@ public final class AppController {
         duelistColumn.setCellValueFactory(new PropertyValueFactory<>("duelistName"));
         medalColumn.setCellValueFactory(new PropertyValueFactory<>("medals"));
         medalTable.setItems(medals);
+
+        medalColumn.setOnEditCommit(event -> {
+            int newRow = medalTable.getEditingCell().getRow() + 1;
+            event.getRowValue().setMedals(event.getNewValue());
+            if (newRow < medals.size()) {
+                medalTable.getSelectionModel().select(newRow, medalColumn);
+                medalTable.getFocusModel().focus(newRow, medalColumn);
+                medalTable.scrollTo(newRow - 1);
+            }
+        });
     }
 
     private void configurePredictionsTable() {
