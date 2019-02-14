@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -141,13 +140,13 @@ public final class AppController {
         predictionGroupColumn.setReorderable(false);
         predictionMedalColumn.setReorderable(false);
 
-        predictionDuelistColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+        predictionDuelistColumn.setCellValueFactory(param ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistNames())
         );
-        predictionGroupColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+        predictionGroupColumn.setCellValueFactory(param ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getHousesString())
         );
-        predictionMedalColumn.setCellValueFactory((CellDataFeatures<MedalResultPair, String> param) ->
+        predictionMedalColumn.setCellValueFactory(param ->
             new ReadOnlyStringWrapper(param.getValue().getValue().getMedalsString())
         );
     }
