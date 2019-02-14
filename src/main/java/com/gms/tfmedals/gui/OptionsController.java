@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 
 public final class OptionsController {
     private ConfigOptions options = null;
@@ -23,6 +24,12 @@ public final class OptionsController {
 
     @FXML
     private CheckBox filterCheckBox;
+
+    @FXML
+    private TextField timerDelayField;
+
+    @FXML
+    private TextField timerUncertaintyField;
 
     void setOptions(ConfigOptions options) {
         unsetOldBindings();
@@ -70,5 +77,8 @@ public final class OptionsController {
         ObservableList<String> partners = FXCollections.observableArrayList("-");
         partners.addAll(Duelist.allPartners());
         partnerComboBox.setItems(partners);
+
+        timerDelayField.setTextFormatter(NumberFormatting.getFormatter());
+        timerUncertaintyField.setTextFormatter(NumberFormatting.getFormatter());
     }
 }
