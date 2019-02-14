@@ -29,6 +29,10 @@ public final class MedalResult {
         return duelist.getName();
     }
 
+    House getHouse() {
+        return duelist.getHouse();
+    }
+
     public Integer getMedals() {
         return medals;
     }
