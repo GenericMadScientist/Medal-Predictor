@@ -3,7 +3,7 @@ package com.gms.tfmedals.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedalResultPair {
+public final class MedalResultPair {
     private final int medalsYield;
     private final Location location;
     private final String duelistNames;
