@@ -74,7 +74,7 @@ public final class AppController {
         if (Files.exists(path)) {
             options = new ConfigOptions();
             try {
-                JSONObject json = new JSONObject(Files.readString(path));
+                JSONObject json = new JSONObject(allFileText());
                 options.readFromJson(json);
             } catch (JSONException ignore) {
                 options = null;
@@ -85,6 +85,11 @@ public final class AppController {
             options = new ConfigOptions();
             Files.write(path, options.toJson().toString().getBytes());
         }
+    }
+
+    private String allFileText() throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get("options.json"));
+        return new String(encoded);
     }
 
     private static ObservableList<MedalResult> initialMedalResults() {
