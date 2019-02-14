@@ -41,6 +41,9 @@ public final class AppController {
     private TableColumn<MedalResult, Integer> medalColumn;
 
     @FXML
+    private Button predictMedalsButton;
+
+    @FXML
     private TreeTableView<MedalResultPair> predictionTable;
 
     private final TreeItem<MedalResultPair> root = new TreeItem<>(null);
@@ -63,6 +66,7 @@ public final class AppController {
     @FXML
     private Label timeOffLabel;
 
+    private boolean isAlreadyRunning = false;
     private String lastKey = null;
 
     public AppController() throws IOException {
@@ -150,23 +154,33 @@ public final class AppController {
 
     @FXML
     private void handlePredictButtonAction() {
-        root.getChildren().clear();
-        fiveCountLabel.setText("Number of 5s: -");
-        timeOffLabel.setText("Time off: -");
+        if (!isAlreadyRunning) {
+            predictMedalsButton.setText("Please wait...");
+            root.getChildren().clear();
+            fiveCountLabel.setText("Number of 5s: -");
+            timeOffLabel.setText("Time off: -");
+            isAlreadyRunning = true;
 
-        MedalFilter filter = new MedalFilter(medals);
-        SeedRange range = seedRangeFromOptions();
-        FilterResult results = filter.results(range);
+            new Thread(() -> {
+                MedalFilter filter = new MedalFilter(medals);
+                SeedRange range = seedRangeFromOptions();
+                FilterResult results = filter.results(range);
 
-        matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
-
-        if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
-            long seed = results.getFirstSeed().getAsLong();
-            Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
-            long numberOfFives = predictions.stream().filter(x -> x.getMedalYield() == 5).count();
-            fiveCountLabel.setText("Number of 5s: " + numberOfFives);
-            fillInPredictions(predictions);
-            setTimeOffText(seed);
+                Platform.runLater(() -> {
+                    matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
+                    if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
+                        long seed = results.getFirstSeed().getAsLong();
+                        Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
+                        long numberOfFives = predictions.stream()
+                            .filter(x -> x.getMedalYield() == 5).count();
+                        fiveCountLabel.setText("Number of 5s: " + numberOfFives);
+                        fillInPredictions(predictions);
+                        setTimeOffText(seed);
+                    }
+                    predictMedalsButton.setText("Predict Medals");
+                    isAlreadyRunning = false;
+                });
+            }).start();
         }
     }
 
