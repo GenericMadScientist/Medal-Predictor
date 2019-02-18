@@ -32,6 +32,11 @@ Time' the program stores the current time of your computer's clock, and with
 'Clear Current Time' you can clear this. You want to record the current time
 immediately after confirming your choice of part 2 partner.
 
+If you are on emu, make sure that PPSSPP is synced with your computer clock. To
+do this, on the emu's main screen go to Settings > System and tick 'Force real
+clock sync (slower, less lag)'. If you are on console, make sure that your PSP's
+system time is accurate.
+
 In experiments with PPSSPP I found the computer time is off a bit from the time
 the game takes from the emu, specifically the emu time was about 13 seconds
 behind. You can adjust for this by changing 'PSP Timer Delay' in the options,
