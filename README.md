@@ -12,7 +12,8 @@ Java 10 but not 11 it will work with other OSes but I've not tested this.
 
 I assume you know what the medal farm in Tag Force is. You enter on the left the
 medals some duelists give, and then by pressing the 'Predict Medals' button on
-the right the program can predict the medals the remaining duelists give.
+the right the program can predict the medals the remaining duelists give. The
+'Reset Known Medals' button clears the currently entered medals.
 
 By clicking Options you can select whether you're running on PS2 or PSP, who
 your partner is, whether to filter out low medal counts (this only shows pairs
