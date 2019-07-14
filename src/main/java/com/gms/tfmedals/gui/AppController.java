@@ -43,6 +43,9 @@ public final class AppController {
     private Button predictMedalsButton;
 
     @FXML
+    private Button resetMedalsButton;
+
+    @FXML
     private TreeTableView<MedalResultPair> predictionTable;
 
     private final TreeItem<MedalResultPair> root = new TreeItem<>(null);
@@ -159,11 +162,11 @@ public final class AppController {
     @FXML
     private void handlePredictButtonAction() {
         if (!isAlreadyRunning) {
-            predictMedalsButton.setText("Please wait...");
-            root.getChildren().clear();
-            fiveCountLabel.setText("Number of 5s: -");
-            timeOffLabel.setText("Time off: -");
             isAlreadyRunning = true;
+            resetMedalsButton.setDisable(true);
+            predictMedalsButton.setDisable(true);
+            predictMedalsButton.setText("Please wait...");
+            clearPredictions();
 
             new Thread(() -> {
                 MedalFilter filter = new MedalFilter(medals);
@@ -184,9 +187,18 @@ public final class AppController {
                     }
                     predictMedalsButton.setText("Predict Medals");
                     isAlreadyRunning = false;
+                    predictMedalsButton.setDisable(false);
+                    resetMedalsButton.setDisable(false);
                 });
             }).start();
         }
+    }
+
+    private void clearPredictions() {
+        root.getChildren().clear();
+        fiveCountLabel.setText("Number of 5s: -");
+        matchingSeedsLabel.setText("Number of matching seeds: -");
+        timeOffLabel.setText("Time off: -");
     }
 
     private SeedRange seedRangeFromOptions() {
@@ -246,6 +258,13 @@ public final class AppController {
             timeOffLabel.setText("Time off: "
                 + new DecimalFormat("#.00#").format(timeDiffInSecs) + 's');
         }
+    }
+
+    @FXML
+    private void handleResetButtonAction() {
+        medals.forEach(result -> result.setMedals(null));
+        medalTable.refresh();
+        clearPredictions();
     }
 
     @FXML

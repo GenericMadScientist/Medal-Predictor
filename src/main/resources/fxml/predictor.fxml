@@ -30,6 +30,7 @@
                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearTimeAction" text="Clear Current Time" HBox.hgrow="ALWAYS" />
             </HBox>
             <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOptionsButtonAction" text="Options" VBox.vgrow="ALWAYS" />
+            <Button fx:id="resetMedalsButton" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResetButtonAction" text="Reset Known Medals" VBox.vgrow="ALWAYS" />
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <Label text="Predictions" VBox.vgrow="ALWAYS" />
