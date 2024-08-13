@@ -17,4 +17,4 @@ jobs:
           java-version: '11'
 
       - name: Run tests
-        run: mvn test
+        run: mvn --batch-mode test
