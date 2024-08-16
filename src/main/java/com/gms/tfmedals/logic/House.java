@@ -1,10 +1,25 @@
 package com.gms.tfmedals.logic;
 
 enum House {
+    /**
+     * Generic duelists in Slifer Red.
+     */
     SLIFER_RED,
+    /**
+     * Generic duelists in Ra Yellow.
+     */
     RA_YELLOW,
+    /**
+     * Generic duelists in Obelisk Blue.
+     */
     OBELISK_BLUE,
+    /**
+     * Generic teacher duelists.
+     */
     TEACHER,
+    /**
+     * Main characters.
+     */
     MAIN_CHARACTER;
 
     @Override
@@ -20,8 +35,8 @@ enum House {
                 return "T";
             case MAIN_CHARACTER:
                 return "MC";
+            default:
+                throw new IllegalArgumentException("Impossible House value");
         }
-
-        throw new IllegalArgumentException("Impossible House value");
     }
 }

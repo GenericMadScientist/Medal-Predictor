@@ -11,6 +11,9 @@ public final class FilterResult {
     FilterResult() {
     }
 
+    /**
+     * @return the first seed in the result, if any is present
+     */
     public OptionalLong getFirstSeed() {
         if (!hasSeed) {
             return OptionalLong.empty();
@@ -23,7 +26,7 @@ public final class FilterResult {
         return count;
     }
 
-    void addSeed(long seed) {
+    void addSeed(final long seed) {
         if (!hasSeed) {
             firstSeed = seed;
             hasSeed = true;
@@ -32,7 +35,7 @@ public final class FilterResult {
         count++;
     }
 
-    static FilterResult combine(List<FilterResult> results) {
+    static FilterResult combine(final List<FilterResult> results) {
         FilterResult finalResult = new FilterResult();
 
         for (FilterResult subresult : results) {

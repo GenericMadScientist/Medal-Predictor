@@ -11,10 +11,18 @@ public final class ConfigOptions {
     private final IntegerProperty pspTimerUncertainty = new SimpleIntegerProperty(0);
     private Long lastTime = null;
 
+    /**
+     * Constructor for default options.
+     */
     public ConfigOptions() {
     }
 
-    public void readFromJson(JSONObject json) {
+    /**
+     * Reads in the options from a JSON object.
+     *
+     * @param json the parsed JSON to read options from
+     */
+    public void readFromJson(final JSONObject json) {
         Console newConsole = json.getEnum(Console.class, "console");
         String newPartner = json.getString("partner");
         boolean newFilterLowMedals = json.getBoolean("filterLowMedals");
@@ -28,6 +36,9 @@ public final class ConfigOptions {
         pspTimerUncertainty.set(newPspTimerUncertainty);
     }
 
+    /**
+     * @return the options in JSON form
+     */
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("console", console.getValue());
@@ -42,6 +53,9 @@ public final class ConfigOptions {
         return console.getValue();
     }
 
+    /**
+     * @return property wrapping the console
+     */
     public ObjectProperty<Console> consoleProperty() {
         return console;
     }
@@ -50,6 +64,9 @@ public final class ConfigOptions {
         return partner.getValue();
     }
 
+    /**
+     * @return property wrapping the partner
+     */
     public StringProperty partnerProperty() {
         return partner;
     }
@@ -58,6 +75,9 @@ public final class ConfigOptions {
         return filterLowMedals.get();
     }
 
+    /**
+     * @return property wrapping whether to filter out low medals
+     */
     public BooleanProperty filterLowMedalsProperty() {
         return filterLowMedals;
     }
@@ -66,6 +86,9 @@ public final class ConfigOptions {
         return pspTimerDelay.get();
     }
 
+    /**
+     * @return property wrapping the PSP timer delay
+     */
     public IntegerProperty pspTimerDelayProperty() {
         return pspTimerDelay;
     }
@@ -74,6 +97,9 @@ public final class ConfigOptions {
         return pspTimerUncertainty.get();
     }
 
+    /**
+     * @return property wrapping the PSP timer uncertainty
+     */
     public IntegerProperty pspTimerUncertaintyProperty() {
         return pspTimerUncertainty;
     }
@@ -82,7 +108,7 @@ public final class ConfigOptions {
         return lastTime;
     }
 
-    public void setLastTime(Long newLastTime) {
+    public void setLastTime(final Long newLastTime) {
         lastTime = newLastTime;
     }
 }

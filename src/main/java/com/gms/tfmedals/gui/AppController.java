@@ -25,7 +25,10 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 public final class AppController {
+    private static final int MAX_MEDALS_PER_DUEL = 5;
     private static final int MEDALS_NEEDED = 80;
+    private static final int MS_PER_SECOND = 1000000;
+    private static final int US_PER_MS = 1000;
 
     private ConfigOptions options = null;
     private final ObservableList<MedalResult> medals = initialMedalResults();
@@ -71,6 +74,12 @@ public final class AppController {
     private boolean isAlreadyRunning = false;
     private String lastKey = null;
 
+    /**
+     * Initialises the controller's options, reading from or creating the options
+     * file.
+     *
+     * @throws IOException
+     */
     public AppController() throws IOException {
         Path path = Paths.get("options.json");
 
@@ -97,9 +106,8 @@ public final class AppController {
 
     private static ObservableList<MedalResult> initialMedalResults() {
         return FXCollections.observableArrayList(
-            Duelist.allDuelists().stream().map(duelist -> new MedalResult(duelist, null))
-                .toArray(MedalResult[]::new)
-        );
+                Duelist.allDuelists().stream().map(duelist -> new MedalResult(duelist, null))
+                        .toArray(MedalResult[]::new));
     }
 
     ConfigOptions getOptions() {
@@ -148,50 +156,50 @@ public final class AppController {
         predictionGroupColumn.setReorderable(false);
         predictionMedalColumn.setReorderable(false);
 
-        predictionDuelistColumn.setCellValueFactory(param ->
-            new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistNames())
-        );
-        predictionGroupColumn.setCellValueFactory(param ->
-            new ReadOnlyStringWrapper(param.getValue().getValue().getHousesString())
-        );
-        predictionMedalColumn.setCellValueFactory(param ->
-            new ReadOnlyStringWrapper(param.getValue().getValue().getMedalsString())
-        );
+        predictionDuelistColumn
+                .setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getDuelistNames()));
+        predictionGroupColumn
+                .setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getHousesString()));
+        predictionMedalColumn
+                .setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getMedalsString()));
     }
 
     @FXML
     private void handlePredictButtonAction() {
-        if (!isAlreadyRunning) {
-            isAlreadyRunning = true;
-            resetMedalsButton.setDisable(true);
-            predictMedalsButton.setDisable(true);
-            predictMedalsButton.setText("Please wait...");
-            clearPredictions();
-
-            new Thread(() -> {
-                MedalFilter filter = new MedalFilter(medals);
-                SeedRange range = seedRangeFromOptions();
-                FilterResult results = filter.results(range);
-
-                Platform.runLater(() -> {
-                    matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
-                    if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
-                        long seed = results.getFirstSeed().getAsLong();
-                        System.out.println(seed);
-                        Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
-                        long numberOfFives = predictions.stream()
-                            .filter(x -> x.getMedalYield() == 5).count();
-                        fiveCountLabel.setText("Number of 5s: " + numberOfFives);
-                        fillInPredictions(predictions);
-                        setTimeOffText(seed);
-                    }
-                    predictMedalsButton.setText("Predict Medals");
-                    isAlreadyRunning = false;
-                    predictMedalsButton.setDisable(false);
-                    resetMedalsButton.setDisable(false);
-                });
-            }).start();
+        if (isAlreadyRunning) {
+            return;
         }
+
+        isAlreadyRunning = true;
+        resetMedalsButton.setDisable(true);
+        predictMedalsButton.setDisable(true);
+        predictMedalsButton.setText("Please wait...");
+        clearPredictions();
+
+        new Thread(() -> {
+            MedalFilter filter = new MedalFilter(medals);
+            SeedRange range = seedRangeFromOptions();
+            FilterResult results = filter.results(range);
+
+            Platform.runLater(() -> {
+                matchingSeedsLabel.setText("Number of matching seeds: " + results.getCount());
+                if (results.getCount() == 1 && results.getFirstSeed().isPresent()) {
+                    long seed = results.getFirstSeed().getAsLong();
+                    System.out.println(seed);
+                    Collection<MedalResultPair> predictions = predictionsFromSeed(seed);
+                    long numberOfFives = predictions.stream()
+                            .filter(x -> x.getMedalYield() == MAX_MEDALS_PER_DUEL)
+                            .count();
+                    fiveCountLabel.setText("Number of 5s: " + numberOfFives);
+                    fillInPredictions(predictions);
+                    setTimeOffText(seed);
+                }
+                predictMedalsButton.setText("Predict Medals");
+                isAlreadyRunning = false;
+                predictMedalsButton.setDisable(false);
+                resetMedalsButton.setDisable(false);
+            });
+        }).start();
     }
 
     private void clearPredictions() {
@@ -207,43 +215,41 @@ public final class AppController {
         } else if (options.getLastTime() == null) {
             return new PSPSeedRange();
         } else {
-            return new PSPSeedRange(options.getLastTime() - 1000000 * options.getPspTimerDelay(),
-                1000000 * options.getPspTimerUncertainty());
+            return new PSPSeedRange(options.getLastTime() - MS_PER_SECOND * options.getPspTimerDelay(),
+                    MS_PER_SECOND * options.getPspTimerUncertainty());
         }
     }
 
-    private Collection<MedalResultPair> predictionsFromSeed(long seed) {
+    private Collection<MedalResultPair> predictionsFromSeed(final long seed) {
         Collection<MedalResultPair> results = MedalResultPair.resultsFromSeed(seed).stream()
-            .filter(x -> !x.hasMember(options.getPartner()))
-            .collect(Collectors.toList());
+                .filter(x -> !x.hasMember(options.getPartner()))
+                .collect(Collectors.toList());
         if (!options.getFilterLowMedals()) {
             return results;
         }
 
         Collection<MedalResultPair> highResults = Collections.emptyList();
-        int medalThreshold = 4;
+        int medalThreshold = MAX_MEDALS_PER_DUEL;
 
         while (highResults.stream().mapToInt(MedalResultPair::getMedalYield).sum() < MEDALS_NEEDED) {
             final int thresholdCopy = medalThreshold;
-            highResults = results.stream().filter(x -> x.getMedalYield() > thresholdCopy)
-                .collect(Collectors.toList());
+            highResults = results.stream().filter(x -> x.getMedalYield() >= thresholdCopy)
+                    .collect(Collectors.toList());
             medalThreshold--;
         }
 
         return highResults;
     }
 
-    private void fillInPredictions(Collection<MedalResultPair> predictions) {
+    private void fillInPredictions(final Collection<MedalResultPair> predictions) {
         for (Location location : Location.values()) {
             Collection<TreeItem<MedalResultPair>> resultsInLocation = predictions.stream()
-                .filter(x -> x.getLocation().equals(location))
-                .map(TreeItem::new)
-                .collect(Collectors.toList());
+                    .filter(x -> x.getLocation().equals(location))
+                    .map(TreeItem::new)
+                    .collect(Collectors.toList());
 
             if (!resultsInLocation.isEmpty()) {
-                TreeItem<MedalResultPair> locationNode = new TreeItem<>(
-                    MedalResultPair.dummyPair(location.toString())
-                );
+                TreeItem<MedalResultPair> locationNode = new TreeItem<>(MedalResultPair.dummyPair(location.toString()));
                 locationNode.setExpanded(true);
                 locationNode.getChildren().addAll(resultsInLocation);
                 root.getChildren().add(locationNode);
@@ -251,12 +257,11 @@ public final class AppController {
         }
     }
 
-    private void setTimeOffText(long seed) {
+    private void setTimeOffText(final long seed) {
         if (options.getConsole().equals(Console.PSP) && (options.getLastTime() != null)) {
-            long time = options.getLastTime() - 1000000 * options.getPspTimerDelay();
-            double timeDiffInSecs = ((int) (time - seed)) / 1000000.0;
-            timeOffLabel.setText("Time off: "
-                + new DecimalFormat("#.00#").format(timeDiffInSecs) + 's');
+            long time = options.getLastTime() - MS_PER_SECOND * options.getPspTimerDelay();
+            double timeDiffInSecs = ((int) (time - seed)) / ((double) MS_PER_SECOND);
+            timeOffLabel.setText("Time off: " + new DecimalFormat("#.00#").format(timeDiffInSecs) + 's');
         }
     }
 
@@ -269,7 +274,7 @@ public final class AppController {
 
     @FXML
     private void handleRecordTimeAction() {
-        options.setLastTime(System.currentTimeMillis() * 1000);
+        options.setLastTime(System.currentTimeMillis() * US_PER_MS);
     }
 
     @FXML
@@ -286,8 +291,10 @@ public final class AppController {
         optionsMenu.start(stage);
     }
 
-    /* Life-saving cell I took from StackOverflow. See
-       https://stackoverflow.com/questions/21987552/how-to-make-a-javafx-tableview-cell-editable-without-first-pressing-enter
+    /*
+     * Life-saving cell I took from StackOverflow. See
+     * https://stackoverflow.com/questions/21987552/how-to-make-a-javafx-tableview-
+     * cell-editable-without-first-pressing-enter
      */
     private class MedalEditingCell extends TableCell<MedalResult, Integer> {
         private TextField textField;
@@ -319,7 +326,7 @@ public final class AppController {
         }
 
         @Override
-        public void updateItem(Integer item, boolean empty) {
+        public void updateItem(final Integer item, final boolean empty) {
             super.updateItem(item, empty);
 
             if (empty) {

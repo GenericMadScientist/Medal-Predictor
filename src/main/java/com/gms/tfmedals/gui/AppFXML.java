@@ -17,16 +17,14 @@ public final class AppFXML extends Application {
     private AppController controller;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(final Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/predictor.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
 
         controller = loader.getController();
 
-        stage.getIcons().add(new Image(
-            getClass().getResourceAsStream("/images/winged_kuriboh.jpg"))
-        );
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/winged_kuriboh.jpg")));
         stage.setScene(scene);
         stage.setTitle("Medal Predictor");
         stage.show();

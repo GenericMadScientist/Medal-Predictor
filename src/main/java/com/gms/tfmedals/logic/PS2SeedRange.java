@@ -1,6 +1,12 @@
 package com.gms.tfmedals.logic;
 
 public final class PS2SeedRange implements SeedRange {
+    private static final long RANGE_SIZE = 0x1000000;
+    private static final long SEED_INCREMENT = 0x100;
+
+    /**
+     * The PS2 seed range.
+     */
     public PS2SeedRange() {
     }
 
@@ -11,11 +17,11 @@ public final class PS2SeedRange implements SeedRange {
 
     @Override
     public long increment() {
-        return 0x100;
+        return SEED_INCREMENT;
     }
 
     @Override
     public long numbOfSeeds() {
-        return 0x1000000;
+        return RANGE_SIZE;
     }
 }

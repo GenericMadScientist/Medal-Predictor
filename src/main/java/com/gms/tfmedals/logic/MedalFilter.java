@@ -8,33 +8,39 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public final class MedalFilter {
-    private final static long TASK_INCREMENT_SIZE = 0x800000;
+    private static final long INIT_SEED_MASK = 0xFFFFFFFFL;
+    private static final long TASK_INCREMENT_SIZE = 0x800000;
 
     private final long[] medalMults;
     private final long[] medalIncs;
     private final int[] medalRolls;
 
-    public MedalFilter(Collection<MedalResult> medalResults) {
+    /**
+     * Constructor for a filter from known medal counts.
+     *
+     * @param medalResults the known medal counts
+     */
+    public MedalFilter(final Collection<MedalResult> medalResults) {
         if (hasDuplicateDuelist(medalResults)) {
             throw new IllegalArgumentException("Duplicate duelist");
         }
 
         List<MedalResult> nonNullMedalResults = medalResults.stream()
-            .filter(x -> x.getMedals() != null)
-            .collect(Collectors.toList());
+                .filter(x -> x.getMedals() != null)
+                .collect(Collectors.toList());
 
         medalMults = nonNullMedalResults.stream()
-            .mapToLong(x -> MedalRng.duelistMult(x.getDuelistId()))
-            .toArray();
+                .mapToLong(x -> MedalRng.duelistMult(x.getDuelistId()))
+                .toArray();
         medalIncs = nonNullMedalResults.stream()
-            .mapToLong(x -> MedalRng.duelistInc(x.getDuelistId()))
-            .toArray();
+                .mapToLong(x -> MedalRng.duelistInc(x.getDuelistId()))
+                .toArray();
         medalRolls = nonNullMedalResults.stream()
-            .mapToInt(x -> x.getMedals() - 1)
-            .toArray();
+                .mapToInt(x -> x.getMedals() - 1)
+                .toArray();
     }
 
-    private static boolean hasDuplicateDuelist(Collection<MedalResult> medalResults) {
+    private static boolean hasDuplicateDuelist(final Collection<MedalResult> medalResults) {
         Set<Integer> duelists = new HashSet<>();
 
         for (MedalResult result : medalResults) {
@@ -46,13 +52,17 @@ public final class MedalFilter {
         return false;
     }
 
-    public FilterResult results(SeedRange range) {
+    /**
+     * @param range the range of seeds to look in
+     * @return the number of matching seeds, and one seed that matches
+     */
+    public FilterResult results(final SeedRange range) {
         ExecutorService executor = Executors.newWorkStealingPool();
         List<Callable<FilterResult>> callables = callablesList(range);
         return getResultFromCallables(executor, callables);
     }
 
-    private List<Callable<FilterResult>> callablesList(SeedRange range) {
+    private List<Callable<FilterResult>> callablesList(final SeedRange range) {
         List<Callable<FilterResult>> callables = new ArrayList<>();
 
         for (long i = 0; i < range.numbOfSeeds(); i += TASK_INCREMENT_SIZE) {
@@ -64,7 +74,7 @@ public final class MedalFilter {
         return callables;
     }
 
-    private FilterResult resultsFromSubrange(long initSeed, long numbOfSeeds, long increment) {
+    private FilterResult resultsFromSubrange(final long initSeed, final long numbOfSeeds, final long increment) {
         FilterResult results = new FilterResult();
 
         long seed = initSeed;
@@ -74,13 +84,13 @@ public final class MedalFilter {
                 results.addSeed(seed);
             }
 
-            seed = (seed + increment) & 0xFFFFFFFFL;
+            seed = (seed + increment) & INIT_SEED_MASK;
         }
 
         return results;
     }
 
-    private boolean isMatchingSeed(long seed) {
+    private boolean isMatchingSeed(final long seed) {
         for (int i = 0; i < medalRolls.length; i++) {
             if (nthMedalRoll(seed, i) != medalRolls[i]) {
                 return false;
@@ -90,13 +100,13 @@ public final class MedalFilter {
         return true;
     }
 
-    private int nthMedalRoll(long seed, int n) {
-        seed = medalMults[n] * seed + medalIncs[n];
-        return MedalRng.medalRoll(seed);
+    private int nthMedalRoll(final long seed, final int n) {
+        long nthSeed = medalMults[n] * seed + medalIncs[n];
+        return MedalRng.medalRoll(nthSeed);
     }
 
-    private FilterResult getResultFromCallables(ExecutorService executor,
-                                                List<Callable<FilterResult>> callables) {
+    private FilterResult getResultFromCallables(final ExecutorService executor,
+            final List<Callable<FilterResult>> callables) {
         List<FilterResult> results = new ArrayList<>();
 
         try {

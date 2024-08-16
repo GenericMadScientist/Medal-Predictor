@@ -1,5 +1,6 @@
-# IntelliJ-specific stuff
+# IDE/editor-specific config
 .idea/
+.vscode/
 *.iml
 
 # Maven results

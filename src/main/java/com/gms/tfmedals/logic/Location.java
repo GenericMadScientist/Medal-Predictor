@@ -1,19 +1,61 @@
 package com.gms.tfmedals.logic;
 
 public enum Location {
+    /**
+     * Location of duelist pairs in the Classroom.
+     */
     CLASSROOM,
+    /**
+     * Location of duelist pairs at the Main Gate.
+     */
     MAIN_GATE,
+    /**
+     * Location of duelist pairs in the Store.
+     */
     STORE,
+    /**
+     * Location of duelist pairs at the Duel Field.
+     */
     DUEL_FIELD,
+    /**
+     * Location of duelist pairs at the Slifer Red Dorm.
+     */
     SLIFER_RED_DORM,
+    /**
+     * Location of duelist pairs at the Cliffs.
+     */
     CLIFF,
+    /**
+     * Location of duelist pairs at the Harbor.
+     */
     HARBOR,
+    /**
+     * Location of duelist pairs at the Ra Yellow Dorm.
+     */
     RA_YELLOW_DORM,
+    /**
+     * Location of duelist pairs at the Obelisk Blue Boys Dorm.
+     */
     OBELISK_BLUE_BOYS_DORM,
+    /**
+     * Location of duelist pairs at the Obelisk Blue Girls Dorm.
+     */
     OBELISK_BLUE_GIRLS_DORM,
+    /**
+     * Location of duelist pairs at the Forest.
+     */
     FOREST,
+    /**
+     * Location of duelist pairs in the Abandoned Dorm.
+     */
     ABANDONED_DORM,
+    /**
+     * Location of duelist pairs at the Volcano.
+     */
     VOLCANO,
+    /**
+     * Location of duelist pairs at the Beach.
+     */
     BEACH;
 
     @Override
@@ -47,8 +89,8 @@ public enum Location {
                 return "Volcano";
             case BEACH:
                 return "Beach";
+            default:
+                throw new IllegalArgumentException("Impossible location value");
         }
-
-        throw new IllegalArgumentException("Impossible location value");
     }
 }

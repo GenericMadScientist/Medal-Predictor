@@ -34,7 +34,7 @@ public final class OptionsController {
     @FXML
     private TextField timerUncertaintyField;
 
-    void setOptions(ConfigOptions options) {
+    void setOptions(final ConfigOptions options) {
         unsetOldBindings();
         this.options = options;
         setNewControlValues();
@@ -52,65 +52,70 @@ public final class OptionsController {
     }
 
     private void setNewControlValues() {
-        if (options != null) {
-            ps2Toggle.selectedProperty().set(options.getConsole().equals(Console.PS2));
-            pspToggle.selectedProperty().set(options.getConsole().equals(Console.PSP));
-            filterCheckBox.selectedProperty().set(options.getFilterLowMedals());
-            partnerComboBox.getSelectionModel().select(options.getPartner());
-            timerDelayField.setText(Integer.toString(options.getPspTimerDelay()));
-            timerUncertaintyField.setText(Integer.toString(options.getPspTimerUncertainty()));
+        if (options == null) {
+            return;
         }
+
+        Console console = options.getConsole();
+        ps2Toggle.selectedProperty().set(console.equals(Console.PS2));
+        pspToggle.selectedProperty().set(console.equals(Console.PSP));
+        filterCheckBox.selectedProperty().set(options.getFilterLowMedals());
+        partnerComboBox.getSelectionModel().select(options.getPartner());
+        timerDelayField.setText(Integer.toString(options.getPspTimerDelay()));
+        timerUncertaintyField.setText(Integer.toString(options.getPspTimerUncertainty()));
     }
 
     private void setNewOptionBindings() {
-        if (options != null) {
-            ObjectBinding<Console> cb = new ObjectBinding<>() {
-                {
-                    super.bind(ps2Toggle.selectedProperty());
-                }
-
-                @Override
-                protected Console computeValue() {
-                    return ps2Toggle.selectedProperty().get() ? Console.PS2 : Console.PSP;
-                }
-            };
-            options.consoleProperty().bind(cb);
-
-            options.filterLowMedalsProperty().bind(filterCheckBox.selectedProperty());
-            options.partnerProperty().bind(partnerComboBox.getSelectionModel().selectedItemProperty());
-
-            IntegerBinding delayProperty = new IntegerBinding() {
-                {
-                    super.bind(timerDelayField.textProperty());
-                }
-
-                @Override
-                protected int computeValue() {
-                    try {
-                        return Integer.valueOf(timerDelayField.getText());
-                    } catch (NumberFormatException ignored) {
-                        return 0;
-                    }
-                }
-            };
-            options.pspTimerDelayProperty().bind(delayProperty);
-
-            IntegerBinding uncertaintyProperty = new IntegerBinding() {
-                {
-                    super.bind(timerUncertaintyField.textProperty());
-                }
-
-                @Override
-                protected int computeValue() {
-                    try {
-                        return Integer.valueOf(timerUncertaintyField.getText());
-                    } catch (NumberFormatException ignored) {
-                        return 0;
-                    }
-                }
-            };
-            options.pspTimerUncertaintyProperty().bind(uncertaintyProperty);
+        if (options == null) {
+            return;
         }
+
+        ObjectBinding<Console> cb = new ObjectBinding<>() {
+            {
+                super.bind(ps2Toggle.selectedProperty());
+            }
+
+            @Override
+            protected Console computeValue() {
+                return ps2Toggle.selectedProperty().get() ? Console.PS2 : Console.PSP;
+            }
+        };
+        options.consoleProperty().bind(cb);
+
+        options.filterLowMedalsProperty().bind(filterCheckBox.selectedProperty());
+        options.partnerProperty().bind(partnerComboBox.getSelectionModel().selectedItemProperty());
+
+        IntegerBinding delayProperty = new IntegerBinding() {
+            {
+                super.bind(timerDelayField.textProperty());
+            }
+
+            @Override
+            protected int computeValue() {
+                try {
+                    return Integer.valueOf(timerDelayField.getText());
+                } catch (NumberFormatException ignored) {
+                    return 0;
+                }
+            }
+        };
+        options.pspTimerDelayProperty().bind(delayProperty);
+
+        IntegerBinding uncertaintyProperty = new IntegerBinding() {
+            {
+                super.bind(timerUncertaintyField.textProperty());
+            }
+
+            @Override
+            protected int computeValue() {
+                try {
+                    return Integer.valueOf(timerUncertaintyField.getText());
+                } catch (NumberFormatException ignored) {
+                    return 0;
+                }
+            }
+        };
+        options.pspTimerUncertaintyProperty().bind(uncertaintyProperty);
     }
 
     @FXML
