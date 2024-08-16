@@ -14,7 +14,7 @@ class DuelistTest {
     @Test
     void constructor_WithNegativeId_ShouldThrowIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-            () -> new Duelist("Chumley", -1, House.SLIFER_RED));
+                () -> new Duelist("Chumley", -1, House.SLIFER_RED));
     }
 
     @Test
@@ -51,7 +51,7 @@ class DuelistTest {
     }
 
     @Test
-    void allPartners_ShouldGiveListOfSize108() {
-        assertEquals(Duelist.allPartners().size(), 108);
+    void allPartners_ShouldGiveListOfSize109() {
+        assertEquals(Duelist.allPartners().size(), 109);
     }
 }
