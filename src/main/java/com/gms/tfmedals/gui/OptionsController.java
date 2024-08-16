@@ -119,6 +119,7 @@ public final class OptionsController {
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void initialize() {
         ObservableList<String> partners = FXCollections.observableArrayList("-");
         partners.addAll(Duelist.allPartners());

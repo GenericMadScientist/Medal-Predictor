@@ -1,6 +1,6 @@
 package com.gms.tfmedals.gui;
 
-import com.gms.tfmedals.logic.*;
+import com.gms.tfmedals.logic.*; // NOPMD
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -115,6 +115,7 @@ public final class AppController {
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void initialize() {
         configureMedalsTable();
         configurePredictionsTable();
@@ -139,12 +140,11 @@ public final class AppController {
         medalTable.setItems(medals);
 
         medalTable.setOnKeyPressed(event -> {
-            if (event.getCode().isDigitKey() && (medalTable.getEditingCell() == null)) {
-                if (medalTable.getSelectionModel().getSelectedIndex() != -1) {
-                    lastKey = event.getText();
-                    medalTable.edit(medalTable.getSelectionModel().getSelectedIndex(), medalColumn);
-                    medalTable.getFocusModel().getFocusedCell();
-                }
+            if (event.getCode().isDigitKey() && medalTable.getEditingCell() == null
+                    && medalTable.getSelectionModel().getSelectedIndex() != -1) {
+                lastKey = event.getText();
+                medalTable.edit(medalTable.getSelectionModel().getSelectedIndex(), medalColumn);
+                medalTable.getFocusModel().getFocusedCell();
             }
         });
     }
@@ -165,6 +165,7 @@ public final class AppController {
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void handlePredictButtonAction() {
         if (isAlreadyRunning) {
             return;
@@ -266,6 +267,7 @@ public final class AppController {
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void handleResetButtonAction() {
         medals.forEach(result -> result.setMedals(null));
         medalTable.refresh();
@@ -273,16 +275,19 @@ public final class AppController {
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void handleRecordTimeAction() {
         options.setLastTime(System.currentTimeMillis() * US_PER_MS);
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void handleClearTimeAction() {
         options.setLastTime(null);
     }
 
     @FXML
+    @SuppressWarnings("PMD")
     private void handleOptionsButtonAction() throws Exception {
         Stage stage = new Stage();
         stage.initOwner(medalTable.getScene().getWindow());
