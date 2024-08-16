@@ -176,6 +176,7 @@ public final class Duelist {
             "Deron",
             "Disa",
             "Don Zaloog",
+            "Dorothy",
             "Emperor.Umiuma",
             "Enzo",
             "Faty",
