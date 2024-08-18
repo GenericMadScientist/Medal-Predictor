@@ -4,9 +4,11 @@ A program to predict the medal distribution in Yu-Gi-Oh! GX Tag Force.
 
 ## Install
 
-Install Java from Oracle's website, version 10 or above. Then grab the jar from
-the [Releases page](../../releases). The jar there is for Windows; I think with
-Java 10 but not 11 it will work with other OSes but I've not tested this.
+Install Java, version 21 or above. I recommend installing the Java 21 JRE from
+[Adoptium's website](https://adoptium.net/en-GB/temurin/releases/?package=jre).
+
+Then grab the jar from the [Releases page](../../releases). The jar there is for
+Windows; let me know if you need a build for Mac or Linux.
 
 ## Usage
 
