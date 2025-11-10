@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "org.openjfx:javafx-fxml"
 
   - package-ecosystem: "github-actions"
     directory: "/"
